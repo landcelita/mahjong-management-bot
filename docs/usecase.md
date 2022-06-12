@@ -13,4 +13,5 @@ player -- (Select who made chombo)
 player -- (Select who received shukugi)
 player -- (Input Uma and Oka)
 player -- (Input the initial points)
+player -- (See the status of players)
 ```
