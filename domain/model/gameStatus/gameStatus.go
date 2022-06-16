@@ -19,8 +19,7 @@ type (
 	}
 )
 
-// factoryによって生成するので、privateにする
-func newGameStatus(
+func NewGameStatus(
 	gameStatusId	uuid.UUID,
 	baKyokuHonba	bakyokuhonba.BaKyokuHonba,
 	tonpuOrHanchan	tonpuorhanchan.TonpuOrHanchan,
