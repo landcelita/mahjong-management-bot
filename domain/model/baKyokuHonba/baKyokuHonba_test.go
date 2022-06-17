@@ -5,30 +5,32 @@ import (
 	"testing"
 )
 
-func TestBa_Names(t *testing.T) {
-	tests := []struct {
-		name string
-		e    Ba
-		want []string
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := tt.e.Names(); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Ba.Names() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
 func TestBa_String(t *testing.T) {
 	tests := []struct {
 		name string
 		e    Ba
 		want string
 	}{
-		// TODO: Add test cases.
+		{
+			name:	"Ton",
+			e:		Ton,
+			want:	"東",
+		},
+		{
+			name:	"Nan",
+			e:		Nan,
+			want:	"南",
+		},
+		{
+			name:	"Out of the range 1",
+			e:		0,
+			want:	"Unknown",
+		},
+		{
+			name:	"Out of the range 2",
+			e:		3,
+			want:	"Unknown",
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -40,6 +42,13 @@ func TestBa_String(t *testing.T) {
 }
 
 func TestNewBaKyokuHonba(t *testing.T) {
+	bkh := [5]BaKyokuHonba{
+		{ba: Ton, kyoku: 1, honba: 10},
+		{ba: Ton, kyoku: 2, honba: 10},
+		{ba: Ton, kyoku: 3, honba: 0},
+		{ba: Ton, kyoku: 4, honba: 0},
+		{ba: Nan, kyoku: 4, honba: 10},
+	}
 	type args struct {
 		ba    Ba
 		kyoku uint
@@ -51,7 +60,54 @@ func TestNewBaKyokuHonba(t *testing.T) {
 		want    *BaKyokuHonba
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name:	 	"Correct 1",
+			args: 		args{ba: Ton, kyoku: 1, honba: 10},
+			want:		&bkh[0],
+			wantErr:	false,
+		},
+		{
+			name:	 	"Correct 2",
+			args: 		args{ba: Ton, kyoku: 2, honba: 10},
+			want:		&bkh[1],
+			wantErr:	false,
+		},
+		{
+			name:	 	"Correct 3",
+			args: 		args{ba: Ton, kyoku: 3, honba: 0},
+			want:		&bkh[2],
+			wantErr:	false,
+		},
+		{
+			name:	 	"Correct 4",
+			args: 		args{ba: Ton, kyoku: 4, honba: 0},
+			want:		&bkh[3],
+			wantErr:	false,
+		},
+		{
+			name:	 	"Correct 5",
+			args: 		args{ba: Nan, kyoku: 4, honba: 10},
+			want:		&bkh[4],
+			wantErr:	false,
+		},
+		{
+			name:		"Incorrect 1",
+			args:		args{ba: 0, kyoku: 1, honba: 1},
+			want:		nil,
+			wantErr:	true,
+		},
+		{
+			name:		"Incorrect 2",
+			args:		args{ba: Ton, kyoku: 0, honba: 1},
+			want:		nil,
+			wantErr:	true,
+		},
+		{
+			name:		"Incorrect 3",
+			args:		args{ba: Nan, kyoku: 5, honba: 10},
+			want:		nil,
+			wantErr:	true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -62,28 +118,6 @@ func TestNewBaKyokuHonba(t *testing.T) {
 			}
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("NewBaKyokuHonba() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
-func TestBaKyokuHonbaFromRepository(t *testing.T) {
-	type args struct {
-		ba    Ba
-		kyoku uint
-		honba uint
-	}
-	tests := []struct {
-		name string
-		args args
-		want *BaKyokuHonba
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := BaKyokuHonbaFromRepository(tt.args.ba, tt.args.kyoku, tt.args.honba); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("BaKyokuHonbaFromRepository() = %v, want %v", got, tt.want)
 			}
 		})
 	}
@@ -104,7 +138,36 @@ func TestBaKyokuHonba_EqualsBaKyoku(t *testing.T) {
 		args   args
 		want   bool
 	}{
-		// TODO: Add test cases.
+		{
+			name:	"true 1",
+			fields:	fields{ba: Ton, kyoku: 1, honba: 10},
+			args: 	args{otherBaKyokuHonba: BaKyokuHonba{ba: Ton, kyoku: 1, honba: 0}},
+			want:	true,
+		},
+		{
+			name:	"true 2",
+			fields:	fields{ba: Nan, kyoku: 3, honba: 10},
+			args: 	args{otherBaKyokuHonba: BaKyokuHonba{ba: Nan, kyoku: 3, honba: 0}},
+			want:	true,
+		},
+		{
+			name:	"true 3",
+			fields:	fields{ba: Nan, kyoku: 4, honba: 0},
+			args:	args{otherBaKyokuHonba: BaKyokuHonba{ba: Nan, kyoku: 4, honba: 0}},
+			want:	true,
+		},
+		{
+			name:	"false 1",
+			fields:	fields{ba: Ton, kyoku: 1, honba: 1},
+			args:	args{otherBaKyokuHonba: BaKyokuHonba{ba: Ton, kyoku: 4, honba: 1}},
+			want:	false,
+		},
+		{
+			name:	"false 2",
+			fields:	fields{ba: Nan, kyoku: 2, honba: 1},
+			args:	args{otherBaKyokuHonba: BaKyokuHonba{ba: Ton, kyoku: 2, honba: 1}},
+			want:	false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -121,6 +184,11 @@ func TestBaKyokuHonba_EqualsBaKyoku(t *testing.T) {
 }
 
 func TestBaKyokuHonba_IncrementBaKyoku(t *testing.T) {
+	bkh := [...]BaKyokuHonba{
+		{ba: Nan, kyoku: 1, honba: 0},
+		{ba: Nan, kyoku: 4, honba: 0},
+		{ba: Ton, kyoku: 2, honba: 0},
+	}
 	type fields struct {
 		ba    Ba
 		kyoku uint
@@ -132,7 +200,30 @@ func TestBaKyokuHonba_IncrementBaKyoku(t *testing.T) {
 		want    *BaKyokuHonba
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name:		"Correct 1",
+			fields:		fields{ba: Ton, kyoku: 4, honba: 10},
+			want:		&bkh[0],
+			wantErr:	false,
+		},
+		{
+			name:		"Correct 2",
+			fields:		fields{ba: Nan, kyoku: 3, honba: 1},
+			want:		&bkh[1],
+			wantErr:	false,
+		},
+		{
+			name:		"Correct 3",
+			fields:		fields{ba: Ton, kyoku: 1, honba: 0},
+			want:		&bkh[2],
+			wantErr:	false,
+		},
+		{
+			name:		"Incorrect 1",
+			fields:		fields{ba: Nan, kyoku: 4, honba: 10},
+			want:		nil,
+			wantErr:	true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -154,6 +245,11 @@ func TestBaKyokuHonba_IncrementBaKyoku(t *testing.T) {
 }
 
 func TestBaKyokuHonba_IncrementHonba(t *testing.T) {
+	bkh := [...]BaKyokuHonba{
+		{ba: Ton, kyoku: 4, honba: 1},
+		{ba: Nan, kyoku: 1, honba: 5},
+		{ba: Nan, kyoku: 4, honba: 10},
+	}
 	type fields struct {
 		ba    Ba
 		kyoku uint
@@ -165,7 +261,24 @@ func TestBaKyokuHonba_IncrementHonba(t *testing.T) {
 		want    *BaKyokuHonba
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name:		"Correct 1",
+			fields:		fields{ba: Ton, kyoku: 4, honba: 0},
+			want:		&bkh[0],
+			wantErr:	false,
+		},
+		{
+			name:		"Correct 2",
+			fields:		fields{ba: Nan, kyoku: 1, honba: 4},
+			want:		&bkh[1],
+			wantErr:	false,
+		},
+		{
+			name:		"Correct 3",
+			fields:		fields{ba: Nan, kyoku: 4, honba: 9},
+			want:		&bkh[2],
+			wantErr:	false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
