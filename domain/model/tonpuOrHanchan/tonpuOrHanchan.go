@@ -9,7 +9,7 @@ const (
 	Hanchan
 )
 
-func (e TonpuOrHanchan) Names() []string {
+func (e TonpuOrHanchan) names() []string {
 	return []string {
 		"Unknown",
 		"東風",
@@ -18,7 +18,10 @@ func (e TonpuOrHanchan) Names() []string {
 }
 
 func (e TonpuOrHanchan) String() string {
-	return e.Names()[e]
+	if e > Hanchan {
+		return "Unknown"
+	}
+	return e.names()[e]
 }
 
 func NewTonpuOrHanchanFromUint(value uint) (*TonpuOrHanchan, error){
