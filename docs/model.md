@@ -39,6 +39,9 @@ package ScoreBoardAggrigates {
 
 note top of ScoreBoard
 scoreは100点刻み。負もありうる。
+kyoutakuはマイナスになることはない。
+kyoutakuも合わせて合計scoreは常に100000でなければならない。
+初期状態は全員25000で、kyoutakuは0。
 endnote
 
 note top of GameStatus
