@@ -11,7 +11,7 @@ const (
 	Nan
 )
 
-func (e Ba) Names() []string {
+func (e Ba) names() []string {
 	return []string {
 		"Unknown",
 		"東",
@@ -20,7 +20,10 @@ func (e Ba) Names() []string {
 }
 
 func (e Ba) String() string {
-	return e.Names()[e]
+	if e > Nan {
+		return "Unknown"
+	}
+	return e.names()[e]
 }
 
 type (
@@ -45,16 +48,6 @@ func NewBaKyokuHonba(ba Ba, kyoku uint, honba uint) (*BaKyokuHonba, error) {
 	return baKyokuHonba, nil
 }
 
-func BaKyokuHonbaFromRepository(ba Ba, kyoku uint, honba uint) (*BaKyokuHonba) {
-	baKyokuHonba := &BaKyokuHonba {
-		ba: ba,
-		kyoku: kyoku,
-		honba: honba,
-	}
-
-	return baKyokuHonba
-}
-
 func (baKyokuHonba *BaKyokuHonba) EqualsBaKyoku(otherBaKyokuHonba BaKyokuHonba) bool {
 	if baKyokuHonba.ba == otherBaKyokuHonba.ba &&
 	baKyokuHonba.kyoku == otherBaKyokuHonba.kyoku {
@@ -62,6 +55,22 @@ func (baKyokuHonba *BaKyokuHonba) EqualsBaKyoku(otherBaKyokuHonba BaKyokuHonba) 
 	} else {
 		return false
 	}
+}
+
+func (baKyokuHonba * BaKyokuHonba) IsLaterThanOrSameFor(otherBaKyokuHonba BaKyokuHonba) bool {
+	if baKyokuHonba.ba > otherBaKyokuHonba.ba {
+		return true
+	} else if baKyokuHonba.ba == otherBaKyokuHonba.ba {
+		if baKyokuHonba.kyoku > otherBaKyokuHonba.kyoku {
+			return true
+		} else if baKyokuHonba.kyoku == otherBaKyokuHonba.kyoku {
+			if baKyokuHonba.honba >= otherBaKyokuHonba.honba {
+				return true
+			}
+		}
+	}
+
+	return false
 }
 
 func (baKyokuHonba BaKyokuHonba) IncrementBaKyoku() (*BaKyokuHonba, error) {
@@ -88,3 +97,5 @@ func (baKyokuHonba BaKyokuHonba) IncrementHonba() (*BaKyokuHonba, error) {
 
 	return &ret, nil
 }
+
+

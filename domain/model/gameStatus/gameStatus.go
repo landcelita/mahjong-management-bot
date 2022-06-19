@@ -6,32 +6,41 @@ import (
 	"mahjong/domain/model/baKyokuHonba"
 	"mahjong/domain/model/playerId"
 	"mahjong/domain/model/tonpuOrHanchan"
+	"mahjong/domain/model/scoreBoard"
 )
+
+type GameStatusId uuid.UUID
 
 type (
 	GameStatus struct {
-		gameStatusId  	uuid.UUID
+		gameStatusId  	GameStatusId
 		baKyokuHonba	bakyokuhonba.BaKyokuHonba
 		tonpuOrHanchan 	tonpuorhanchan.TonpuOrHanchan
-		scoreId			uuid.UUID
+		scoreBoardId	scoreboard.ScoreBoardId
 		playerIds		[4]playerid.PlayerId
 		isActive		bool
 	}
 )
 
 func NewGameStatus(
-	gameStatusId	uuid.UUID,
+	gameStatusId	GameStatusId,
 	baKyokuHonba	bakyokuhonba.BaKyokuHonba,
 	tonpuOrHanchan	tonpuorhanchan.TonpuOrHanchan,
-	scoreId			uuid.UUID,
+	scoreBoardId	scoreboard.ScoreBoardId,
 	playerIds		[4]playerid.PlayerId,
 	isActive		bool) (*GameStatus, error) {
+	
+	if nan10, _ := bakyokuhonba.NewBaKyokuHonba(bakyokuhonba.Nan, 1, 0); 
+	tonpuOrHanchan == tonpuorhanchan.Tonpu &&
+	baKyokuHonba.IsLaterThanOrSameFor(*nan10) {
+		return nil, fmt.Errorf("東風戦で南場に入ることはできません。")
+	}
 	
 	gameStatus := &GameStatus {
 		gameStatusId: gameStatusId,
 		baKyokuHonba: baKyokuHonba,
 		tonpuOrHanchan: tonpuOrHanchan,
-		scoreId: scoreId,
+		scoreBoardId: scoreBoardId,
 		playerIds: playerIds,
 		isActive: isActive,
 	}

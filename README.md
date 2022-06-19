@@ -5,5 +5,5 @@
 IDE: VSCode(Codespaces)
 使用言語: Go
 アーキテクチャ: オニオンアーキテクチャ
-ドキュメント、作図: Markdown, PlantUML, Graphviz
+ドキュメント、作図: Markdown, PlantUML, Graphviz, Markdown Preview Enhanced
 クラウド: GCP
