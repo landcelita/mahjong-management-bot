@@ -2,6 +2,7 @@
 
 局終了時のゲームの進み方:
 - 誰かのscoreが負になる <span style='color: #00aa00;'>ゲーム終了</span>
+飛び終了なしの場合は後で考える
 - オーラス時
   - 親がロンorツモorテンパイをして親が1位になった時: <span style='color: #00aa00;'>ゲーム終了</span>
   - 親がロンorツモorテンパイをして親が1位にならない時: <span style='color: #aa0000;'>honbaが進む</span>
@@ -22,37 +23,44 @@ package GameStatusAggrigates {
     gameStatusId
     baKyokuHonba
     tonpuOrHanchan
-    scoreId
+    scoreBoardId
     playerIds[4]
     isActive
   }
+}
 
-  object Score {
-    scoreId
+package ScoreBoardAggrigates {
+  object ScoreBoard {
+    scoreBoardId
     scores[4]
     kyotaku
   }
 }
 
+note top of ScoreBoard
+scoreは100点刻み。負もありうる。
+endnote
+
 note top of GameStatus
 tonpuOrHanchanはtonpu又はhanchan。
-baKyokuHonbaは(ton, 2, 1)
+baKyokuHonbaは(Ton, 2, 1)
 のような値オブジェクト。
-baはton,nanで、kyokuは1,2,3,4,
+baはTon,Nanで、kyokuは1,2,3,4,
 honbaは0以上の整数。
 honbaは1ずつ増加し、(ba, kyoku)については必ず
-(ton, 1), (ton, 2), (ton, 3), (ton, 4), // tonpuならここまで
-(nan, 1), (nan, 2), (nan, 3), (nan, 4)の順に進む。
+(Ton, 1), (Ton, 2), (Ton, 3), (Ton, 4), // tonpuならここまで
+(Nan, 1), (Nan, 2), (Nan, 3), (Nan, 4)の順に進む。
 さらに、(ba, kyoku)が進む際はhonbaは0にリセットされる。
 Olast()はtonpuOrHanchanが、
-tonpuの時はbaKyokuHonba == (ton, 4, *)ならば true
-hanchanの時はbaKyokuHonba == (nan, 4, *)ならば true
+tonpuの時はbaKyokuHonba == (Ton, 4, *)ならば true
+hanchanの時はbaKyokuHonba == (Nan, 4, *)ならば true
 それ以外ならばfalse
+tonpuの時、baKyokuHonbaのbaがNanになってはならない。
 (ただし、これは南入、西入なしな場合で、ある場合はまた後で考える)
 局終了時の進み方はかなり複雑なので、上記にmarkdownで記述している。
 endnote
 
-GameStatus "1" -* "1" Score
+GameStatus "1" -> "1" ScoreBoard
 
 package PlayerAggrigate {
   object Player {
@@ -61,15 +69,17 @@ package PlayerAggrigate {
   }
 }
 
+note top of Player
+PlayerIdはSlackが各ユーザーに付与しているIDを利用する。
+endnote
+
 GameStatus "4" -> "1" Player
 
 package KyokuResultAggrigate {
   object KyokuResult {
     kyokuResultId
     gameStatusId
-    ba
-    kyoku
-    honba
+    baKyokuHonba
     ronOrTsumoOrRyukyoku
   }
 

@@ -57,6 +57,22 @@ func (baKyokuHonba *BaKyokuHonba) EqualsBaKyoku(otherBaKyokuHonba BaKyokuHonba) 
 	}
 }
 
+func (baKyokuHonba * BaKyokuHonba) IsLaterThanOrSameFor(otherBaKyokuHonba BaKyokuHonba) bool {
+	if baKyokuHonba.ba > otherBaKyokuHonba.ba {
+		return true
+	} else if baKyokuHonba.ba == otherBaKyokuHonba.ba {
+		if baKyokuHonba.kyoku > otherBaKyokuHonba.kyoku {
+			return true
+		} else if baKyokuHonba.kyoku == otherBaKyokuHonba.kyoku {
+			if baKyokuHonba.honba >= otherBaKyokuHonba.honba {
+				return true
+			}
+		}
+	}
+
+	return false
+}
+
 func (baKyokuHonba BaKyokuHonba) IncrementBaKyoku() (*BaKyokuHonba, error) {
 	if baKyokuHonba.ba == Nan && baKyokuHonba.kyoku == 4 {
 		return nil, fmt.Errorf("ValueError: これ以上baKyokuを進めることはできません。")
