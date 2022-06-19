@@ -21,3 +21,13 @@ func NewScore(scoreInt int) (*Score, error){
 
 	return &score, nil
 }
+
+func (score Score) Add(otherScore Score) Score {
+	return Score {
+		score: score.score + otherScore.score,
+	}
+}
+
+func (score Score) Equals(otherScore Score) bool {
+	return score.score == otherScore.score
+}
