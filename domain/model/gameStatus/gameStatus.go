@@ -8,24 +8,27 @@ import (
 	"mahjong/domain/model/tonpuOrHanchan"
 )
 
+type GameStatusId uuid.UUID
+
 type (
 	GameStatus struct {
-		gameStatusId  	uuid.UUID
+		gameStatusId  	GameStatusId
 		baKyokuHonba	bakyokuhonba.BaKyokuHonba
 		tonpuOrHanchan 	tonpuorhanchan.TonpuOrHanchan
-		scoreId			uuid.UUID
+		scoreId			uuid.UUID			// 後でScoreIDはきちんと定義する
 		playerIds		[4]playerid.PlayerId
 		isActive		bool
 	}
 )
 
 func NewGameStatus(
-	gameStatusId	uuid.UUID,
+	gameStatusId	GameStatusId,
 	baKyokuHonba	bakyokuhonba.BaKyokuHonba,
 	tonpuOrHanchan	tonpuorhanchan.TonpuOrHanchan,
 	scoreId			uuid.UUID,
 	playerIds		[4]playerid.PlayerId,
 	isActive		bool) (*GameStatus, error) {
+	
 	
 	gameStatus := &GameStatus {
 		gameStatusId: gameStatusId,
