@@ -15,11 +15,11 @@ type (
 	}
 )
 
-// func NewScoreBoard(
-// 	scoreBoardId	ScoreBoardId,
-// 	scores			[4]Score,
-// 	kyotaku			Score,
-// 	) (*ScoreBoard, error) {
+func NewScoreBoard(
+	scoreBoardId	ScoreBoardId,
+	scores			[4]Score,
+	kyotaku			Score,
+	) (*ScoreBoard, error) {
 	
 	
-// }
+}
