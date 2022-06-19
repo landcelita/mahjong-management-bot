@@ -31,3 +31,7 @@ func (score Score) Add(otherScore Score) Score {
 func (score Score) Equals(otherScore Score) bool {
 	return score.score == otherScore.score
 }
+
+func (score Score) LessThan(otherScore Score) bool {
+	return score.score < otherScore.score
+}

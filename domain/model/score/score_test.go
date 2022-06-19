@@ -125,21 +125,21 @@ func TestScore_Equals(t *testing.T) {
 	}{
 		{
 			name:   "equal 1",
-			fields: fields{ score: 10000 },
-			args:	args{ otherScore: Score{ score: 10000 } },
-			want:	true,
+			fields: fields{score: 10000},
+			args:   args{otherScore: Score{score: 10000}},
+			want:   true,
 		},
 		{
 			name:   "equal 2",
-			fields: fields{ score: -100 },
-			args:	args{ otherScore: Score{ score: -100 } },
-			want:	true,
+			fields: fields{score: -100},
+			args:   args{otherScore: Score{score: -100}},
+			want:   true,
 		},
 		{
 			name:   "not equal 1",
-			fields: fields{ score: 10000 },
-			args:	args{ otherScore: Score{ score: -10000 } },
-			want:	false,
+			fields: fields{score: 10000},
+			args:   args{otherScore: Score{score: -10000}},
+			want:   false,
 		},
 	}
 	for _, tt := range tests {
@@ -149,6 +149,50 @@ func TestScore_Equals(t *testing.T) {
 			}
 			if got := score.Equals(tt.args.otherScore); got != tt.want {
 				t.Errorf("Score.Equals() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestScore_LessThan(t *testing.T) {
+	type fields struct {
+		score int
+	}
+	type args struct {
+		otherScore Score
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		args   args
+		want   bool
+	}{
+		{
+			name:   "not less 1",
+			fields: fields{score: 10000},
+			args:   args{otherScore: Score{score: 10000}},
+			want:   false,
+		},
+		{
+			name:   "not less 2",
+			fields: fields{score: -100},
+			args:   args{otherScore: Score{score: -1000}},
+			want:   false,
+		},
+		{
+			name:   "less 1",
+			fields: fields{score: -10000},
+			args:   args{otherScore: Score{score: -100}},
+			want:   true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			score := Score{
+				score: tt.fields.score,
+			}
+			if got := score.LessThan(tt.args.otherScore); got != tt.want {
+				t.Errorf("Score.LessThan() = %v, want %v", got, tt.want)
 			}
 		})
 	}
