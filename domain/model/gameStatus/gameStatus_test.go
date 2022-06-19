@@ -8,6 +8,7 @@ import (
 	"testing"
 	"reflect"
 	"strconv"
+	. "mahjong/testutil"
 
 	"github.com/google/uuid"
 )
@@ -24,44 +25,30 @@ func generate_TestGameStatus() (
 	) {
 	
 	gsId := GameStatusId(uuid.New())
-	var bkhs [testNum]bakyokuhonba.BaKyokuHonba
-	var torh [testNum]tonpuorhanchan.TonpuOrHanchan
+	bkhs := [testNum]bakyokuhonba.BaKyokuHonba{
+		First(bakyokuhonba.NewBaKyokuHonba(bakyokuhonba.Nan, 4, 0)),
+		First(bakyokuhonba.NewBaKyokuHonba(bakyokuhonba.Ton, 4, 10)),
+		First(bakyokuhonba.NewBaKyokuHonba(bakyokuhonba.Ton, 2, 1)),
+		First(bakyokuhonba.NewBaKyokuHonba(bakyokuhonba.Nan, 1, 0)),
+		First(bakyokuhonba.NewBaKyokuHonba(bakyokuhonba.Ton, 4, 0)),
+	}
+	torh := [testNum]tonpuorhanchan.TonpuOrHanchan{
+		tonpuorhanchan.Hanchan,
+		tonpuorhanchan.Tonpu,
+		tonpuorhanchan.Tonpu,
+		tonpuorhanchan.Hanchan,
+		tonpuorhanchan.Hanchan,
+	}
 	scId := scoreboard.ScoreBoardId(uuid.New())
-	var pIds [4]playerid.PlayerId
+	pIds := [4]playerid.PlayerId {
+		First(playerid.NewPlayerId("AAAAA")),
+		First(playerid.NewPlayerId("AAAAA")),
+		First(playerid.NewPlayerId("AAAAA")),
+		First(playerid.NewPlayerId("AAAAA")),
+	}
 	isActive := true
 
-	bkhBa := [testNum]bakyokuhonba.Ba{
-		bakyokuhonba.Nan,
-		bakyokuhonba.Ton,
-		bakyokuhonba.Ton,
-		bakyokuhonba.Nan,
-		bakyokuhonba.Ton,
-	}
-	bkhKyoku := [testNum]uint{4, 4, 2, 1, 4}
-	bkhHonba := [testNum]uint{0, 10, 1, 0, 0}
-
-	for i := 0; i < testNum; i++ {
-		bkh, e := bakyokuhonba.NewBaKyokuHonba(bkhBa[i], bkhKyoku[i], bkhHonba[i])
-		if e != nil {
-			panic(e)
-		}
-		bkhs[i] = *bkh
-	}
-
-	torh[0] = tonpuorhanchan.Hanchan
-	torh[1] = tonpuorhanchan.Tonpu
-	torh[2] = tonpuorhanchan.Tonpu
-	torh[3] = tonpuorhanchan.Hanchan
-	torh[4] = tonpuorhanchan.Hanchan
-
-	for i := 0; i < 4; i++ {
-		pId, e := playerid.NewPlayerId("AAAAA")
-		if e != nil {
-			panic(e)
-		}
-		pIds[i] = *pId
-	}
-
+	
 	return gsId, bkhs, torh, scId, pIds, isActive
 }
 
