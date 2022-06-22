@@ -1,8 +1,8 @@
-package main
+package api
 
-func main() {
+// func main() {
 
-}
+// }
 
 // import (
 // 	// "root/config"
