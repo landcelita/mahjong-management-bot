@@ -3,21 +3,28 @@ package gamestatus
 import (
 	"fmt"
 	"github.com/google/uuid"
-	"mahjong/domain/model/baKyokuHonba"
-	"mahjong/domain/model/playerId"
-	"mahjong/domain/model/tonpuOrHanchan"
-	"mahjong/domain/model/scoreBoard"
+	"github.com/landcelita/mahjong-management-bot/domain/model/baKyokuHonba"
+	"github.com/landcelita/mahjong-management-bot/domain/model/playerId"
+	"github.com/landcelita/mahjong-management-bot/domain/model/tonpuOrHanchan"
 )
 
 type GameStatusId uuid.UUID
+
+type Jicha uint
+
+const (
+	Toncha Jicha = iota
+	Nancha
+	Shacha
+	Pecha
+)
 
 type (
 	GameStatus struct {
 		gameStatusId  	GameStatusId
 		baKyokuHonba	bakyokuhonba.BaKyokuHonba
 		tonpuOrHanchan 	tonpuorhanchan.TonpuOrHanchan
-		scoreBoardId	scoreboard.ScoreBoardId
-		playerIds		[4]playerid.PlayerId
+		playerIds		map[Jicha]playerid.PlayerId
 		isActive		bool
 	}
 )
@@ -26,8 +33,7 @@ func NewGameStatus(
 	gameStatusId	GameStatusId,
 	baKyokuHonba	bakyokuhonba.BaKyokuHonba,
 	tonpuOrHanchan	tonpuorhanchan.TonpuOrHanchan,
-	scoreBoardId	scoreboard.ScoreBoardId,
-	playerIds		[4]playerid.PlayerId,
+	playerIds		map[Jicha]playerid.PlayerId,
 	isActive		bool) (*GameStatus, error) {
 	
 	if nan10, _ := bakyokuhonba.NewBaKyokuHonba(bakyokuhonba.Nan, 1, 0); 
@@ -40,7 +46,6 @@ func NewGameStatus(
 		gameStatusId: gameStatusId,
 		baKyokuHonba: baKyokuHonba,
 		tonpuOrHanchan: tonpuOrHanchan,
-		scoreBoardId: scoreBoardId,
 		playerIds: playerIds,
 		isActive: isActive,
 	}

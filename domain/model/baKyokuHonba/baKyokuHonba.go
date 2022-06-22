@@ -48,7 +48,7 @@ func NewBaKyokuHonba(ba Ba, kyoku uint, honba uint) (*BaKyokuHonba, error) {
 	return baKyokuHonba, nil
 }
 
-func (baKyokuHonba *BaKyokuHonba) EqualsBaKyoku(otherBaKyokuHonba BaKyokuHonba) bool {
+func (baKyokuHonba BaKyokuHonba) EqualsBaKyoku(otherBaKyokuHonba BaKyokuHonba) bool {
 	if baKyokuHonba.ba == otherBaKyokuHonba.ba &&
 	baKyokuHonba.kyoku == otherBaKyokuHonba.kyoku {
 		return true
@@ -57,7 +57,7 @@ func (baKyokuHonba *BaKyokuHonba) EqualsBaKyoku(otherBaKyokuHonba BaKyokuHonba) 
 	}
 }
 
-func (baKyokuHonba * BaKyokuHonba) IsLaterThanOrSameFor(otherBaKyokuHonba BaKyokuHonba) bool {
+func (baKyokuHonba BaKyokuHonba) IsLaterThanOrSameFor(otherBaKyokuHonba BaKyokuHonba) bool {
 	if baKyokuHonba.ba > otherBaKyokuHonba.ba {
 		return true
 	} else if baKyokuHonba.ba == otherBaKyokuHonba.ba {
