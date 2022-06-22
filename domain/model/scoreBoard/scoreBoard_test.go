@@ -1,10 +1,10 @@
 package scoreboard
 
 import (
-	"mahjong/domain/model/score"
+	"github.com/landcelita/mahjong-management-bot/domain/model/score"
+	. "github.com/landcelita/mahjong-management-bot/testutil"
 	"testing"
 	"github.com/google/uuid"
-	. "mahjong/testutil"
 )
 
 func TestNewScoreBoard(t *testing.T) {

@@ -3,7 +3,7 @@ package scoreboard
 import (
 	"fmt"
 	"github.com/google/uuid"
-	"mahjong/domain/model/score"
+	"github.com/landcelita/mahjong-management-bot/domain/model/score"
 )
 
 type ScoreBoardId uuid.UUID

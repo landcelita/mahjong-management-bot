@@ -1,14 +1,13 @@
 package gamestatus
 
 import (
-	"mahjong/domain/model/baKyokuHonba"
-	"mahjong/domain/model/playerId"
-	"mahjong/domain/model/tonpuOrHanchan"
-	"mahjong/domain/model/scoreBoard"
+	"github.com/landcelita/mahjong-management-bot/domain/model/baKyokuHonba"
+	"github.com/landcelita/mahjong-management-bot/domain/model/playerId"
+	"github.com/landcelita/mahjong-management-bot/domain/model/tonpuOrHanchan"
 	"testing"
 	"reflect"
 	"strconv"
-	. "mahjong/testutil"
+	. "github.com/landcelita/mahjong-management-bot/testutil"
 
 	"github.com/google/uuid"
 )
@@ -19,8 +18,7 @@ func generate_TestGameStatus() (
 	GameStatusId,
 	[testNum]bakyokuhonba.BaKyokuHonba,
 	[testNum]tonpuorhanchan.TonpuOrHanchan,
-	scoreboard.ScoreBoardId,
-	[4]playerid.PlayerId,
+	map[Jicha]playerid.PlayerId,
 	bool,
 	) {
 	
@@ -39,29 +37,26 @@ func generate_TestGameStatus() (
 		tonpuorhanchan.Hanchan,
 		tonpuorhanchan.Hanchan,
 	}
-	scId := scoreboard.ScoreBoardId(uuid.New())
-	pIds := [4]playerid.PlayerId {
-		First(playerid.NewPlayerId("AAAAA")),
-		First(playerid.NewPlayerId("AAAAA")),
-		First(playerid.NewPlayerId("AAAAA")),
-		First(playerid.NewPlayerId("AAAAA")),
-	}
+	pIds := map[Jicha]playerid.PlayerId{}
+	pIds[Toncha] = First(playerid.NewPlayerId("TONCHA"))
+	pIds[Nancha] = First(playerid.NewPlayerId("NANCHA"))
+	pIds[Shacha] = First(playerid.NewPlayerId("SHACHA"))
+	pIds[Pecha] = First(playerid.NewPlayerId("PECHA"))
 	isActive := true
 
 	
-	return gsId, bkhs, torh, scId, pIds, isActive
+	return gsId, bkhs, torh, pIds, isActive
 }
 
 func TestGameStatus_IsOlast(t *testing.T) {
-	gsId, bkhs, torh, scId, pIds, isActive := generate_TestGameStatus()
+	gsId, bkhs, torh, pIds, isActive := generate_TestGameStatus()
 	wants := [testNum]bool{true, true, false, false, false}
 
 	type fields struct {
 		gameStatusId   GameStatusId
 		baKyokuHonba   bakyokuhonba.BaKyokuHonba
 		tonpuOrHanchan tonpuorhanchan.TonpuOrHanchan
-		scoreBoardId   scoreboard.ScoreBoardId
-		playerIds      [4]playerid.PlayerId
+		playerIds      map[Jicha]playerid.PlayerId
 		isActive       bool
 	}
 	var tests = [testNum]struct {
@@ -81,7 +76,6 @@ func TestGameStatus_IsOlast(t *testing.T) {
 				gameStatusId:   gsId,
 				baKyokuHonba:   bkhs[i],
 				tonpuOrHanchan: torh[i],
-				scoreBoardId:   scId,
 				playerIds:      pIds,
 				isActive:       isActive,
 			},
@@ -94,7 +88,6 @@ func TestGameStatus_IsOlast(t *testing.T) {
 				gameStatusId:   tt.fields.gameStatusId,
 				baKyokuHonba:   tt.fields.baKyokuHonba,
 				tonpuOrHanchan: tt.fields.tonpuOrHanchan,
-				scoreBoardId:   tt.fields.scoreBoardId,
 				playerIds:      tt.fields.playerIds,
 				isActive:       tt.fields.isActive,
 			}
@@ -106,7 +99,7 @@ func TestGameStatus_IsOlast(t *testing.T) {
 }
 
 func TestGameStatus_AdvanceGameBaKyoku(t *testing.T) {
-	gsId, bkhs, torh, scId, pIds, isActive := generate_TestGameStatus()
+	gsId, bkhs, torh, pIds, isActive := generate_TestGameStatus()
 	wantErrs := [testNum]bool{true, true, false, false, false}
 	var wantBKHs [testNum]*bakyokuhonba.BaKyokuHonba
 	wantBKHs[0], _ = bakyokuhonba.NewBaKyokuHonba(bakyokuhonba.Nan, 4, 0)
@@ -119,8 +112,7 @@ func TestGameStatus_AdvanceGameBaKyoku(t *testing.T) {
 		gameStatusId   GameStatusId
 		baKyokuHonba   bakyokuhonba.BaKyokuHonba
 		tonpuOrHanchan tonpuorhanchan.TonpuOrHanchan
-		scoreBoardId   scoreboard.ScoreBoardId
-		playerIds      [4]playerid.PlayerId
+		playerIds      map[Jicha]playerid.PlayerId
 		isActive       bool
 	}
 	tests := [testNum]struct {
@@ -139,7 +131,6 @@ func TestGameStatus_AdvanceGameBaKyoku(t *testing.T) {
 				gameStatusId:   gsId,
 				baKyokuHonba:   bkhs[i],
 				tonpuOrHanchan: torh[i],
-				scoreBoardId:   scId,
 				playerIds:      pIds,
 				isActive:       isActive,
 			},
@@ -153,7 +144,6 @@ func TestGameStatus_AdvanceGameBaKyoku(t *testing.T) {
 				gameStatusId:   tt.fields.gameStatusId,
 				baKyokuHonba:   tt.fields.baKyokuHonba,
 				tonpuOrHanchan: tt.fields.tonpuOrHanchan,
-				scoreBoardId:   tt.fields.scoreBoardId,
 				playerIds:      tt.fields.playerIds,
 				isActive:       tt.fields.isActive,
 			}
@@ -169,7 +159,7 @@ func TestGameStatus_AdvanceGameBaKyoku(t *testing.T) {
 }
 
 func TestGameStatus_AdvanceGameHonba(t *testing.T) {
-	gsId, bkhs, torh, scId, pIds, isActive := generate_TestGameStatus()
+	gsId, bkhs, torh, pIds, isActive := generate_TestGameStatus()
 	wantErrs := [testNum]bool{false, false, false, false, false}
 	var wantBKHs [testNum]*bakyokuhonba.BaKyokuHonba
 	wantBKHs[0], _ = bakyokuhonba.NewBaKyokuHonba(bakyokuhonba.Nan, 4, 1)
@@ -182,8 +172,7 @@ func TestGameStatus_AdvanceGameHonba(t *testing.T) {
 		gameStatusId   GameStatusId
 		baKyokuHonba   bakyokuhonba.BaKyokuHonba
 		tonpuOrHanchan tonpuorhanchan.TonpuOrHanchan
-		scoreBoardId   scoreboard.ScoreBoardId
-		playerIds      [4]playerid.PlayerId
+		playerIds      map[Jicha]playerid.PlayerId
 		isActive       bool
 	}
 	tests := [testNum]struct {
@@ -202,7 +191,6 @@ func TestGameStatus_AdvanceGameHonba(t *testing.T) {
 				gameStatusId:   gsId,
 				baKyokuHonba:   bkhs[i],
 				tonpuOrHanchan: torh[i],
-				scoreBoardId:   scId,
 				playerIds:      pIds,
 				isActive:       isActive,
 			},
@@ -216,7 +204,6 @@ func TestGameStatus_AdvanceGameHonba(t *testing.T) {
 				gameStatusId:   tt.fields.gameStatusId,
 				baKyokuHonba:   tt.fields.baKyokuHonba,
 				tonpuOrHanchan: tt.fields.tonpuOrHanchan,
-				scoreBoardId:   tt.fields.scoreBoardId,
 				playerIds:      tt.fields.playerIds,
 				isActive:       tt.fields.isActive,
 			}
@@ -232,7 +219,7 @@ func TestGameStatus_AdvanceGameHonba(t *testing.T) {
 }
 
 func TestNewGameStatus(t *testing.T) {
-	gsId, bkhs, _, scId, pIds, isActive := generate_TestGameStatus()
+	gsId, bkhs, _, pIds, isActive := generate_TestGameStatus()
 	torh := [testNum]tonpuorhanchan.TonpuOrHanchan{
 		tonpuorhanchan.Hanchan,
 		tonpuorhanchan.Tonpu,
@@ -248,8 +235,7 @@ func TestNewGameStatus(t *testing.T) {
 		gameStatusId   GameStatusId
 		baKyokuHonba   bakyokuhonba.BaKyokuHonba
 		tonpuOrHanchan tonpuorhanchan.TonpuOrHanchan
-		scoreBoardId   scoreboard.ScoreBoardId
-		playerIds      [4]playerid.PlayerId
+		playerIds      map[Jicha]playerid.PlayerId
 		isActive       bool
 	}
 	tests := [testNum]struct {
@@ -269,7 +255,6 @@ func TestNewGameStatus(t *testing.T) {
 				gameStatusId:   gsId,
 				baKyokuHonba:   bkhs[i],
 				tonpuOrHanchan: torh[i],
-				scoreBoardId:   scId,
 				playerIds:      pIds,
 				isActive:       isActive,
 			},
@@ -278,7 +263,7 @@ func TestNewGameStatus(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			_, err := NewGameStatus(tt.args.gameStatusId, tt.args.baKyokuHonba, tt.args.tonpuOrHanchan, tt.args.scoreBoardId, tt.args.playerIds, tt.args.isActive)
+			_, err := NewGameStatus(tt.args.gameStatusId, tt.args.baKyokuHonba, tt.args.tonpuOrHanchan, tt.args.playerIds, tt.args.isActive)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("NewGameStatus() error = %v, wantErr %v", err, tt.wantErr)
 				return
