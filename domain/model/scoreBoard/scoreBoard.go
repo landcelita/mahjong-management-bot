@@ -2,9 +2,10 @@ package scoreboard
 
 import (
 	"fmt"
+
 	"github.com/google/uuid"
+	"github.com/landcelita/mahjong-management-bot/domain/model/jicha"
 	"github.com/landcelita/mahjong-management-bot/domain/model/score"
-	"github.com/landcelita/mahjong-management-bot/domain/model/playerId"
 )
 
 type ScoreBoardId uuid.UUID
@@ -12,22 +13,22 @@ type ScoreBoardId uuid.UUID
 type (
 	ScoreBoard struct {
 		scoreBoardId	ScoreBoardId
-		scores			map[playerid.PlayerId]score.Score
+		scores			map[jicha.Jicha]score.Score
 		kyotaku			score.Score
 	}
 )
 
 func NewScoreBoard(
 	scoreBoardId	ScoreBoardId,
-	scores			map[playerid.PlayerId]score.Score,
+	scores			map[jicha.Jicha]score.Score,
 	kyotaku			score.Score,
 	) (*ScoreBoard, error) {
 	
 	if score100k, _ := score.NewScore(100000);
-	!scores[0].
-		Add(scores[1]).
-		Add(scores[2]).
-		Add(scores[3]).
+	!scores[jicha.Toncha].
+		Add(scores[jicha.Nancha]).
+		Add(scores[jicha.Shacha]).
+		Add(scores[jicha.Pecha]).
 		Add(kyotaku).
 		Equals(*score100k){
 		
