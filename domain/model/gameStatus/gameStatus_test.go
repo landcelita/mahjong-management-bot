@@ -1,12 +1,14 @@
 package gamestatus
 
 import (
-	"github.com/landcelita/mahjong-management-bot/domain/model/baKyokuHonba"
-	"github.com/landcelita/mahjong-management-bot/domain/model/playerId"
-	"github.com/landcelita/mahjong-management-bot/domain/model/tonpuOrHanchan"
-	"testing"
 	"reflect"
 	"strconv"
+	"testing"
+
+	"github.com/landcelita/mahjong-management-bot/domain/model/baKyokuHonba"
+	"github.com/landcelita/mahjong-management-bot/domain/model/jicha"
+	"github.com/landcelita/mahjong-management-bot/domain/model/playerId"
+	"github.com/landcelita/mahjong-management-bot/domain/model/tonpuOrHanchan"
 	. "github.com/landcelita/mahjong-management-bot/testutil"
 
 	"github.com/google/uuid"
@@ -18,7 +20,7 @@ func generate_TestGameStatus() (
 	GameStatusId,
 	[testNum]bakyokuhonba.BaKyokuHonba,
 	[testNum]tonpuorhanchan.TonpuOrHanchan,
-	map[Jicha]playerid.PlayerId,
+	map[jicha.Jicha]playerid.PlayerId,
 	bool,
 	) {
 	
@@ -37,11 +39,11 @@ func generate_TestGameStatus() (
 		tonpuorhanchan.Hanchan,
 		tonpuorhanchan.Hanchan,
 	}
-	pIds := make(map[Jicha]playerid.PlayerId)
-	pIds[Toncha] = First(playerid.NewPlayerId("PLAYER1"))
-	pIds[Nancha] = First(playerid.NewPlayerId("PLAYER2"))
-	pIds[Shacha] = First(playerid.NewPlayerId("PLAYER3"))
-	pIds[Pecha] = First(playerid.NewPlayerId("PLAYER4"))
+	pIds := make(map[jicha.Jicha]playerid.PlayerId)
+	pIds[jicha.Toncha] = First(playerid.NewPlayerId("PLAYER1"))
+	pIds[jicha.Nancha] = First(playerid.NewPlayerId("PLAYER2"))
+	pIds[jicha.Shacha] = First(playerid.NewPlayerId("PLAYER3"))
+	pIds[jicha.Pecha] = First(playerid.NewPlayerId("PLAYER4"))
 	isActive := true
 
 	
@@ -56,7 +58,7 @@ func TestGameStatus_IsOlast(t *testing.T) {
 		gameStatusId   GameStatusId
 		baKyokuHonba   bakyokuhonba.BaKyokuHonba
 		tonpuOrHanchan tonpuorhanchan.TonpuOrHanchan
-		playerIds      map[Jicha]playerid.PlayerId
+		playerIds      map[jicha.Jicha]playerid.PlayerId
 		isActive       bool
 	}
 	var tests = [testNum]struct {
@@ -102,7 +104,7 @@ func TestGameStatus_AdvanceGameBaKyoku(t *testing.T) {
 	gsId, bkhs, torh, pIds, isActive := generate_TestGameStatus()
 	wantErrs := [testNum]bool{true, true, false, false, false}
 	var wantBKHs [testNum]*bakyokuhonba.BaKyokuHonba
-	var wantPlayerIds [testNum]map[Jicha]playerid.PlayerId
+	var wantPlayerIds [testNum]map[jicha.Jicha]playerid.PlayerId
 	wantBKHs[0], _ = bakyokuhonba.NewBaKyokuHonba(bakyokuhonba.Nan, 4, 0)
 	wantBKHs[1], _ = bakyokuhonba.NewBaKyokuHonba(bakyokuhonba.Ton, 4, 10)
 	wantBKHs[2], _ = bakyokuhonba.NewBaKyokuHonba(bakyokuhonba.Ton, 3, 0)
@@ -110,18 +112,18 @@ func TestGameStatus_AdvanceGameBaKyoku(t *testing.T) {
 	wantBKHs[4], _ = bakyokuhonba.NewBaKyokuHonba(bakyokuhonba.Nan, 1, 0)
 
 	for i := 0; i < testNum; i++ {
-		wantPlayerIds[i] = make(map[Jicha]playerid.PlayerId)
-		wantPlayerIds[i][Toncha] = First(playerid.NewPlayerId("PLAYER4"))
-		wantPlayerIds[i][Nancha] = First(playerid.NewPlayerId("PLAYER1"))
-		wantPlayerIds[i][Shacha] = First(playerid.NewPlayerId("PLAYER2"))
-		wantPlayerIds[i][Pecha] = First(playerid.NewPlayerId("PLAYER3"))
+		wantPlayerIds[i] = make(map[jicha.Jicha]playerid.PlayerId)
+		wantPlayerIds[i][jicha.Toncha] = First(playerid.NewPlayerId("PLAYER4"))
+		wantPlayerIds[i][jicha.Nancha] = First(playerid.NewPlayerId("PLAYER1"))
+		wantPlayerIds[i][jicha.Shacha] = First(playerid.NewPlayerId("PLAYER2"))
+		wantPlayerIds[i][jicha.Pecha] = First(playerid.NewPlayerId("PLAYER3"))
 	}
 
 	type fields struct {
 		gameStatusId   GameStatusId
 		baKyokuHonba   bakyokuhonba.BaKyokuHonba
 		tonpuOrHanchan tonpuorhanchan.TonpuOrHanchan
-		playerIds      map[Jicha]playerid.PlayerId
+		playerIds      map[jicha.Jicha]playerid.PlayerId
 		isActive       bool
 	}
 	tests := [testNum]struct {
@@ -181,7 +183,7 @@ func TestGameStatus_AdvanceGameHonba(t *testing.T) {
 		gameStatusId   GameStatusId
 		baKyokuHonba   bakyokuhonba.BaKyokuHonba
 		tonpuOrHanchan tonpuorhanchan.TonpuOrHanchan
-		playerIds      map[Jicha]playerid.PlayerId
+		playerIds      map[jicha.Jicha]playerid.PlayerId
 		isActive       bool
 	}
 	tests := [testNum]struct {
@@ -244,7 +246,7 @@ func TestNewGameStatus(t *testing.T) {
 		gameStatusId   GameStatusId
 		baKyokuHonba   bakyokuhonba.BaKyokuHonba
 		tonpuOrHanchan tonpuorhanchan.TonpuOrHanchan
-		playerIds      map[Jicha]playerid.PlayerId
+		playerIds      map[jicha.Jicha]playerid.PlayerId
 		isActive       bool
 	}
 	tests := [testNum]struct {
