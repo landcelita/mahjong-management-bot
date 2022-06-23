@@ -37,11 +37,11 @@ func generate_TestGameStatus() (
 		tonpuorhanchan.Hanchan,
 		tonpuorhanchan.Hanchan,
 	}
-	pIds := map[Jicha]playerid.PlayerId{}
-	pIds[Toncha] = First(playerid.NewPlayerId("TONCHA"))
-	pIds[Nancha] = First(playerid.NewPlayerId("NANCHA"))
-	pIds[Shacha] = First(playerid.NewPlayerId("SHACHA"))
-	pIds[Pecha] = First(playerid.NewPlayerId("PECHA"))
+	pIds := make(map[Jicha]playerid.PlayerId)
+	pIds[Toncha] = First(playerid.NewPlayerId("PLAYER1"))
+	pIds[Nancha] = First(playerid.NewPlayerId("PLAYER2"))
+	pIds[Shacha] = First(playerid.NewPlayerId("PLAYER3"))
+	pIds[Pecha] = First(playerid.NewPlayerId("PLAYER4"))
 	isActive := true
 
 	
@@ -102,11 +102,20 @@ func TestGameStatus_AdvanceGameBaKyoku(t *testing.T) {
 	gsId, bkhs, torh, pIds, isActive := generate_TestGameStatus()
 	wantErrs := [testNum]bool{true, true, false, false, false}
 	var wantBKHs [testNum]*bakyokuhonba.BaKyokuHonba
+	var wantPlayerIds [testNum]map[Jicha]playerid.PlayerId
 	wantBKHs[0], _ = bakyokuhonba.NewBaKyokuHonba(bakyokuhonba.Nan, 4, 0)
 	wantBKHs[1], _ = bakyokuhonba.NewBaKyokuHonba(bakyokuhonba.Ton, 4, 10)
 	wantBKHs[2], _ = bakyokuhonba.NewBaKyokuHonba(bakyokuhonba.Ton, 3, 0)
 	wantBKHs[3], _ = bakyokuhonba.NewBaKyokuHonba(bakyokuhonba.Nan, 2, 0)
 	wantBKHs[4], _ = bakyokuhonba.NewBaKyokuHonba(bakyokuhonba.Nan, 1, 0)
+
+	for i := 0; i < testNum; i++ {
+		wantPlayerIds[i] = make(map[Jicha]playerid.PlayerId)
+		wantPlayerIds[i][Toncha] = First(playerid.NewPlayerId("PLAYER4"))
+		wantPlayerIds[i][Nancha] = First(playerid.NewPlayerId("PLAYER1"))
+		wantPlayerIds[i][Shacha] = First(playerid.NewPlayerId("PLAYER2"))
+		wantPlayerIds[i][Pecha] = First(playerid.NewPlayerId("PLAYER3"))
+	}
 
 	type fields struct {
 		gameStatusId   GameStatusId

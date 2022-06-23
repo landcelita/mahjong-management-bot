@@ -13,7 +13,7 @@ type GameStatusId uuid.UUID
 type Jicha uint
 
 const (
-	Toncha Jicha = iota
+	Toncha Jicha = iota + 1
 	Nancha
 	Shacha
 	Pecha
@@ -35,7 +35,16 @@ func NewGameStatus(
 	tonpuOrHanchan	tonpuorhanchan.TonpuOrHanchan,
 	playerIds		map[Jicha]playerid.PlayerId,
 	isActive		bool) (*GameStatus, error) {
-	
+
+	if len(playerIds) != 4 {
+		return nil, fmt.Errorf("playerは四人である必要があります。")
+	}
+
+	if _, exist := playerIds[Toncha]; !exist { return nil, fmt.Errorf("Tonchaが指定されていません。") }
+	if _, exist := playerIds[Nancha]; !exist { return nil, fmt.Errorf("Nanchaが指定されていません。") }
+	if _, exist := playerIds[Shacha]; !exist { return nil, fmt.Errorf("Shachaが指定されていません。") }
+	if _, exist := playerIds[Pecha]; !exist { return nil, fmt.Errorf("Pechaが指定されていません。") }
+
 	if nan10, _ := bakyokuhonba.NewBaKyokuHonba(bakyokuhonba.Nan, 1, 0); 
 	tonpuOrHanchan == tonpuorhanchan.Tonpu &&
 	baKyokuHonba.IsLaterThanOrSameFor(*nan10) {
@@ -83,6 +92,12 @@ func (gameStatus *GameStatus) AdvanceGameBaKyoku() (error) {
 	if gameStatus.IsOlast() {
 		return fmt.Errorf("オーラス時にBaKyokuを進めることはできません。")
 	}
+
+	playerIds_copy := gameStatus.playerIds
+	gameStatus.playerIds[Toncha] = playerIds_copy[Nancha]
+	gameStatus.playerIds[Nancha] = playerIds_copy[Shacha]
+	gameStatus.playerIds[Shacha] = playerIds_copy[Pecha]
+	gameStatus.playerIds[Pecha] = playerIds_copy[Toncha]
 
 	nextBaKyokuHonba, err := gameStatus.baKyokuHonba.IncrementBaKyoku()
 	

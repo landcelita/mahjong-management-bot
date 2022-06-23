@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"github.com/landcelita/mahjong-management-bot/domain/model/score"
+	"github.com/landcelita/mahjong-management-bot/domain/model/playerId"
 )
 
 type ScoreBoardId uuid.UUID
@@ -11,14 +12,14 @@ type ScoreBoardId uuid.UUID
 type (
 	ScoreBoard struct {
 		scoreBoardId	ScoreBoardId
-		scores			[4]score.Score
+		scores			map[playerid.PlayerId]score.Score
 		kyotaku			score.Score
 	}
 )
 
 func NewScoreBoard(
 	scoreBoardId	ScoreBoardId,
-	scores			[4]score.Score,
+	scores			map[playerid.PlayerId]score.Score,
 	kyotaku			score.Score,
 	) (*ScoreBoard, error) {
 	
