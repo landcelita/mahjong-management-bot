@@ -23,6 +23,16 @@ func NewScoreBoard(
 	scores			map[jicha.Jicha]score.Score,
 	kyotaku			score.Score,
 	) (*ScoreBoard, error) {
+
+	if len(scores) != 4 {
+		return nil, fmt.Errorf("scoreは四人分必要あります。")
+	}
+
+	for _, jicha := range []jicha.Jicha{jicha.Toncha, jicha.Nancha, jicha.Shacha, jicha.Pecha} {
+		if _, exist := scores[jicha]; !exist {
+			return nil, fmt.Errorf(string(jicha) + "のscoreが指定されていません。")
+		}
+	}
 	
 	if score100k, _ := score.NewScore(100000);
 	!scores[jicha.Toncha].

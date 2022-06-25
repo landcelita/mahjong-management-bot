@@ -78,6 +78,33 @@ func TestNewScoreBoard(t *testing.T) {
 			},
 			wantErr:	true,
 		},
+		{
+			name:    	"異常系 scoreが4つ分指定されていない場合",
+			args:    	args{
+				scoreBoardId:	scoreBoardId,
+				scores:			map[jicha.Jicha]score.Score{
+					jicha.Toncha: First(score.NewScore(25000)),
+					jicha.Nancha: First(score.NewScore(25000)),
+					jicha.Shacha: First(score.NewScore(25000)),
+				},
+				kyotaku:		First(score.NewScore(25000)),
+			},
+			wantErr:	true,
+		},
+		{
+			name:    	"異常系 playerの形式が間違っている場合",
+			args:    	args{
+				scoreBoardId:	scoreBoardId,
+				scores:			map[jicha.Jicha]score.Score{
+					jicha.Toncha: First(score.NewScore(25000)),
+					jicha.Nancha: First(score.NewScore(25000)),
+					jicha.Shacha: First(score.NewScore(25000)),
+					jicha.Jicha("Nan"): First(score.NewScore(0)),
+				},
+				kyotaku:		First(score.NewScore(25000)),
+			},
+			wantErr:	true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
