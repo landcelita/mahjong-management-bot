@@ -26,7 +26,8 @@ func NewGameStatus(
 	baKyokuHonba	bakyokuhonba.BaKyokuHonba,
 	tonpuOrHanchan	tonpuorhanchan.TonpuOrHanchan,
 	playerIds		map[jicha.Jicha]playerid.PlayerId,
-	isActive		bool) (*GameStatus, error) {
+	isActive		bool,
+) (*GameStatus, error) {
 
 	if len(playerIds) != 4 {
 		return nil, fmt.Errorf("playerは四人である必要があります。")

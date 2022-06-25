@@ -22,7 +22,7 @@ func NewScoreBoard(
 	scoreBoardId	ScoreBoardId,
 	scores			map[jicha.Jicha]score.Score,
 	kyotaku			score.Score,
-	) (*ScoreBoard, error) {
+) (*ScoreBoard, error) {
 
 	if len(scores) != 4 {
 		return nil, fmt.Errorf("scoreは四人分必要あります。")
