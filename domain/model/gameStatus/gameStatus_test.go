@@ -273,7 +273,7 @@ func TestNewGameStatus(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			_, err := newGameStatus(tt.args.gameStatusId, tt.args.baKyokuHonba, tt.args.tonpuOrHanchan, tt.args.playerIds, tt.args.isActive)
+			_, err := NewGameStatus(tt.args.gameStatusId, tt.args.baKyokuHonba, tt.args.tonpuOrHanchan, tt.args.playerIds, tt.args.isActive)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("NewGameStatus() error = %v, wantErr %v", err, tt.wantErr)
 				return
