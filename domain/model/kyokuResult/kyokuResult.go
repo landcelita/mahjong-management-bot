@@ -4,10 +4,10 @@ import (
 	"fmt"
 
 	"github.com/google/uuid"
-	bakyokuhonba "github.com/landcelita/mahjong-management-bot/domain/model/baKyokuHonba"
-	gamestatus "github.com/landcelita/mahjong-management-bot/domain/model/gameStatus"
-	hanfu "github.com/landcelita/mahjong-management-bot/domain/model/hanFu"
-	"github.com/landcelita/mahjong-management-bot/domain/model/jicha"
+	bkh "github.com/landcelita/mahjong-management-bot/domain/model/baKyokuHonba"
+	gs "github.com/landcelita/mahjong-management-bot/domain/model/gameStatus"
+	hf "github.com/landcelita/mahjong-management-bot/domain/model/hanFu"
+	jc "github.com/landcelita/mahjong-management-bot/domain/model/jicha"
 )
 
 type KyokuResultId uuid.UUID
@@ -15,40 +15,40 @@ type KyokuResultId uuid.UUID
 type (
 	KyokuResult struct {
 		kyokuResultId	KyokuResultId
-		gameStatusId	gamestatus.GameStatusId
-		baKyokuHonba	bakyokuhonba.BaKyokuHonba
-		riichiJichas	map[jicha.Jicha]struct{}
-		ronWinnerJicha	*jicha.Jicha
-		ronLoserJicha	*jicha.Jicha
-		tsumoJicha		*jicha.Jicha
-		tenpaiJichas	*map[jicha.Jicha]struct{}
-		hanFu			*hanfu.HanFu
+		gameStatusId	gs.GameStatusId
+		baKyokuHonba	bkh.BaKyokuHonba
+		riichiJichas	map[jc.Jicha]struct{}
+		ronWinnerJicha	*jc.Jicha
+		ronLoserJicha	*jc.Jicha
+		tsumoJicha		*jc.Jicha
+		tenpaiJichas	*map[jc.Jicha]struct{}
+		hanFu			*hf.HanFu
 	}
 )
 
 func NewKyokuResult(
 	kyokuResultId	KyokuResultId,
-	gameStatusId	gamestatus.GameStatusId,
-	baKyokuHonba	bakyokuhonba.BaKyokuHonba,
-	riichiJichas	map[jicha.Jicha]struct{},
-	ronWinnerJicha	*jicha.Jicha,
-	ronLoserJicha	*jicha.Jicha,
-	tsumoJicha		*jicha.Jicha,
-	tenpaiJichas	*map[jicha.Jicha]struct{},
-	hanFu			*hanfu.HanFu,
+	gameStatusId	gs.GameStatusId,
+	baKyokuHonba	bkh.BaKyokuHonba,
+	riichiJichas	map[jc.Jicha]struct{},
+	ronWinnerJicha	*jc.Jicha,
+	ronLoserJicha	*jc.Jicha,
+	tsumoJicha		*jc.Jicha,
+	tenpaiJichas	*map[jc.Jicha]struct{},
+	hanFu			*hf.HanFu,
 ) (*KyokuResult, error) {
 
 	for k := range riichiJichas {
-		if k != jicha.Toncha && k != jicha.Nancha &&
-		k != jicha.Shacha && k != jicha.Pecha {
+		if k != jc.Toncha && k != jc.Nancha &&
+		k != jc.Shacha && k != jc.Pecha {
 			return nil, fmt.Errorf("riichiJichaの値が不正です。")
 		}
 	}
 
 	if tenpaiJichas != nil {
 		for k := range *tenpaiJichas {
-			if k != jicha.Toncha && k != jicha.Nancha &&
-			k != jicha.Shacha && k != jicha.Pecha {
+			if k != jc.Toncha && k != jc.Nancha &&
+			k != jc.Shacha && k != jc.Pecha {
 				return nil, fmt.Errorf("tenpaiJichaの値が不正です。")
 			}
 		}
