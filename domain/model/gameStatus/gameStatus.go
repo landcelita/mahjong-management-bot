@@ -3,10 +3,10 @@ package gamestatus
 import (
 	"fmt"
 	"github.com/google/uuid"
-	"github.com/landcelita/mahjong-management-bot/domain/model/baKyokuHonba"
-	"github.com/landcelita/mahjong-management-bot/domain/model/playerId"
+	bkh "github.com/landcelita/mahjong-management-bot/domain/model/baKyokuHonba"
+	pid "github.com/landcelita/mahjong-management-bot/domain/model/playerId"
 	"github.com/landcelita/mahjong-management-bot/domain/model/tonpuOrHanchan"
-	"github.com/landcelita/mahjong-management-bot/domain/model/jicha"
+	jc "github.com/landcelita/mahjong-management-bot/domain/model/jicha"
 )
 
 type GameStatusId uuid.UUID
@@ -14,18 +14,18 @@ type GameStatusId uuid.UUID
 type (
 	GameStatus struct {
 		gameStatusId  	GameStatusId
-		baKyokuHonba	bakyokuhonba.BaKyokuHonba
+		baKyokuHonba	bkh.BaKyokuHonba
 		tonpuOrHanchan 	tonpuorhanchan.TonpuOrHanchan
-		playerIds		map[jicha.Jicha]playerid.PlayerId
+		playerIds		map[jc.Jicha]pid.PlayerId
 		isActive		bool
 	}
 )
 
 func NewGameStatus(
 	gameStatusId	GameStatusId,
-	baKyokuHonba	bakyokuhonba.BaKyokuHonba,
+	baKyokuHonba	bkh.BaKyokuHonba,
 	tonpuOrHanchan	tonpuorhanchan.TonpuOrHanchan,
-	playerIds		map[jicha.Jicha]playerid.PlayerId,
+	playerIds		map[jc.Jicha]pid.PlayerId,
 	isActive		bool,
 ) (*GameStatus, error) {
 
@@ -33,13 +33,13 @@ func NewGameStatus(
 		return nil, fmt.Errorf("playerは四人である必要があります。")
 	}
 
-	for _, jicha := range []jicha.Jicha{jicha.Toncha, jicha.Nancha, jicha.Shacha, jicha.Pecha} {
+	for _, jicha := range []jc.Jicha{jc.Toncha, jc.Nancha, jc.Shacha, jc.Pecha} {
 		if _, exist := playerIds[jicha]; !exist {
 			return nil, fmt.Errorf(string(jicha) + "が指定されていません。")
 		}
 	}
 
-	if nan10, _ := bakyokuhonba.NewBaKyokuHonba(bakyokuhonba.Nan, 1, 0); 
+	if nan10, _ := bkh.NewBaKyokuHonba(bkh.Nan, 1, 0);
 	tonpuOrHanchan == tonpuorhanchan.Tonpu &&
 	baKyokuHonba.IsLaterThanOrSameFor(*nan10) {
 		return nil, fmt.Errorf("東風戦で南場に入ることはできません。")
@@ -58,8 +58,8 @@ func NewGameStatus(
 
 func (gameStatus GameStatus) IsOlast() (bool) {
 	if gameStatus.tonpuOrHanchan == tonpuorhanchan.Tonpu {
-		if last, err := bakyokuhonba.NewBaKyokuHonba(
-			bakyokuhonba.Ton,
+		if last, err := bkh.NewBaKyokuHonba(
+			bkh.Ton,
 			4,
 			0,
 		); gameStatus.baKyokuHonba.EqualsBaKyoku(*last) && err == nil {
@@ -68,8 +68,8 @@ func (gameStatus GameStatus) IsOlast() (bool) {
 			return false
 		}
 	} else if gameStatus.tonpuOrHanchan == tonpuorhanchan.Hanchan {
-		if last, err := bakyokuhonba.NewBaKyokuHonba(
-			bakyokuhonba.Nan,
+		if last, err := bkh.NewBaKyokuHonba(
+			bkh.Nan,
 			4,
 			0,
 		); gameStatus.baKyokuHonba.EqualsBaKyoku(*last) && err == nil {
@@ -88,10 +88,10 @@ func (gameStatus *GameStatus) AdvanceGameBaKyoku() (error) {
 	}
 
 	playerIds_copy := gameStatus.playerIds
-	gameStatus.playerIds[jicha.Toncha] = playerIds_copy[jicha.Nancha]
-	gameStatus.playerIds[jicha.Nancha] = playerIds_copy[jicha.Shacha]
-	gameStatus.playerIds[jicha.Shacha] = playerIds_copy[jicha.Pecha]
-	gameStatus.playerIds[jicha.Pecha] = playerIds_copy[jicha.Toncha]
+	gameStatus.playerIds[jc.Toncha] = playerIds_copy[jc.Nancha]
+	gameStatus.playerIds[jc.Nancha] = playerIds_copy[jc.Shacha]
+	gameStatus.playerIds[jc.Shacha] = playerIds_copy[jc.Pecha]
+	gameStatus.playerIds[jc.Pecha] = playerIds_copy[jc.Toncha]
 
 	nextBaKyokuHonba, err := gameStatus.baKyokuHonba.IncrementBaKyoku()
 	

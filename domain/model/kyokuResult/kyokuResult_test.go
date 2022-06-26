@@ -4,30 +4,30 @@ import (
 	"testing"
 
 	"github.com/google/uuid"
-	bakyokuhonba "github.com/landcelita/mahjong-management-bot/domain/model/baKyokuHonba"
-	gamestatus "github.com/landcelita/mahjong-management-bot/domain/model/gameStatus"
-	hanfu "github.com/landcelita/mahjong-management-bot/domain/model/hanFu"
-	"github.com/landcelita/mahjong-management-bot/domain/model/jicha"
+	bkh "github.com/landcelita/mahjong-management-bot/domain/model/baKyokuHonba"
+	gs "github.com/landcelita/mahjong-management-bot/domain/model/gameStatus"
+	hf "github.com/landcelita/mahjong-management-bot/domain/model/hanFu"
+	jc "github.com/landcelita/mahjong-management-bot/domain/model/jicha"
 	. "github.com/landcelita/mahjong-management-bot/testutil"
 )
 
 func TestNewKyokuResult(t *testing.T) {
-	toncha := jicha.Toncha
-	nancha := jicha.Nancha
-	shacha := jicha.Shacha
-	pecha := jicha.Pecha
-	toncha2 := jicha.Toncha
+	toncha := jc.Toncha
+	nancha := jc.Nancha
+	shacha := jc.Shacha
+	pecha := jc.Pecha
+	toncha2 := jc.Toncha
 
 	type args struct {
 		kyokuResultId  KyokuResultId
-		gameStatusId   gamestatus.GameStatusId
-		baKyokuHonba   bakyokuhonba.BaKyokuHonba
-		riichiJichas   map[jicha.Jicha]struct{}
-		ronWinnerJicha *jicha.Jicha
-		ronLoserJicha  *jicha.Jicha
-		tsumoJicha     *jicha.Jicha
-		tenpaiJichas   *map[jicha.Jicha]struct{}
-		hanFu          *hanfu.HanFu
+		gameStatusId   gs.GameStatusId
+		baKyokuHonba   bkh.BaKyokuHonba
+		riichiJichas   map[jc.Jicha]struct{}
+		ronWinnerJicha *jc.Jicha
+		ronLoserJicha  *jc.Jicha
+		tsumoJicha     *jc.Jicha
+		tenpaiJichas   *map[jc.Jicha]struct{}
+		hanFu          *hf.HanFu
 	}
 	tests := []struct {
 		name    string
@@ -38,18 +38,18 @@ func TestNewKyokuResult(t *testing.T) {
 			name: "正常系 ron",
 			args: args{
 				kyokuResultId: KyokuResultId(uuid.New()),
-				gameStatusId:  gamestatus.GameStatusId(uuid.New()),
-				baKyokuHonba: FirstPtoV(bakyokuhonba.NewBaKyokuHonba(
-					bakyokuhonba.Ton, 2, 3,
+				gameStatusId:  gs.GameStatusId(uuid.New()),
+				baKyokuHonba: FirstPtoV(bkh.NewBaKyokuHonba(
+					bkh.Ton, 2, 3,
 				)),
-				riichiJichas: map[jicha.Jicha]struct{}{
+				riichiJichas: map[jc.Jicha]struct{}{
 					toncha: {}, nancha: {}, shacha: {}, pecha:  {},
 				},
 				ronWinnerJicha: &toncha,
 				ronLoserJicha:  &nancha,
 				tsumoJicha:     nil,
 				tenpaiJichas:   nil,
-				hanFu:          FirstPtoP(hanfu.NewHanFu(hanfu.Han1, hanfu.Fu40)),
+				hanFu:          FirstPtoP(hf.NewHanFu(hf.Han1, hf.Fu40)),
 			},
 			wantErr: false,
 		},
@@ -57,17 +57,17 @@ func TestNewKyokuResult(t *testing.T) {
 			name: "正常系 tsumo",
 			args: args{
 				kyokuResultId: KyokuResultId(uuid.New()),
-				gameStatusId:  gamestatus.GameStatusId(uuid.New()),
-				baKyokuHonba: FirstPtoV(bakyokuhonba.NewBaKyokuHonba(
-					bakyokuhonba.Nan, 4, 1,
+				gameStatusId:  gs.GameStatusId(uuid.New()),
+				baKyokuHonba: FirstPtoV(bkh.NewBaKyokuHonba(
+					bkh.Nan, 4, 1,
 				)),
-				riichiJichas: map[jicha.Jicha]struct{}{
+				riichiJichas: map[jc.Jicha]struct{}{
 				},
 				ronWinnerJicha: nil,
 				ronLoserJicha:  nil,
 				tsumoJicha:     &nancha,
 				tenpaiJichas:   nil,
-				hanFu:          FirstPtoP(hanfu.NewHanFu(hanfu.Han1, hanfu.Fu40)),
+				hanFu:          FirstPtoP(hf.NewHanFu(hf.Han1, hf.Fu40)),
 			},
 			wantErr: false,
 		},
@@ -75,17 +75,17 @@ func TestNewKyokuResult(t *testing.T) {
 			name: "正常系 ryukyoku",
 			args: args{
 				kyokuResultId: KyokuResultId(uuid.New()),
-				gameStatusId:  gamestatus.GameStatusId(uuid.New()),
-				baKyokuHonba: FirstPtoV(bakyokuhonba.NewBaKyokuHonba(
-					bakyokuhonba.Nan, 1, 1,
+				gameStatusId:  gs.GameStatusId(uuid.New()),
+				baKyokuHonba: FirstPtoV(bkh.NewBaKyokuHonba(
+					bkh.Nan, 1, 1,
 				)),
-				riichiJichas: map[jicha.Jicha]struct{}{
+				riichiJichas: map[jc.Jicha]struct{}{
 					toncha: {}, nancha: {},
 				},
 				ronWinnerJicha: nil,
 				ronLoserJicha:  nil,
 				tsumoJicha:     nil,
-				tenpaiJichas:   &map[jicha.Jicha]struct{}{
+				tenpaiJichas:   &map[jc.Jicha]struct{}{
 					toncha: {}, nancha: {}, shacha: {},
 				},
 				hanFu:          nil,
@@ -96,17 +96,17 @@ func TestNewKyokuResult(t *testing.T) {
 			name: "異常系 riichiJichasの値が不正",
 			args: args{
 				kyokuResultId: KyokuResultId(uuid.New()),
-				gameStatusId:  gamestatus.GameStatusId(uuid.New()),
-				baKyokuHonba: FirstPtoV(bakyokuhonba.NewBaKyokuHonba(
-					bakyokuhonba.Nan, 1, 1,
+				gameStatusId:  gs.GameStatusId(uuid.New()),
+				baKyokuHonba: FirstPtoV(bkh.NewBaKyokuHonba(
+					bkh.Nan, 1, 1,
 				)),
-				riichiJichas: map[jicha.Jicha]struct{}{
-					jicha.Jicha("Ton"): {},
+				riichiJichas: map[jc.Jicha]struct{}{
+					jc.Jicha("Ton"): {},
 				},
 				ronWinnerJicha: nil,
 				ronLoserJicha:  nil,
 				tsumoJicha:     nil,
-				tenpaiJichas:   &map[jicha.Jicha]struct{}{
+				tenpaiJichas:   &map[jc.Jicha]struct{}{
 					toncha: {}, nancha: {}, shacha: {},
 				},
 				hanFu:          nil,
@@ -117,18 +117,18 @@ func TestNewKyokuResult(t *testing.T) {
 			name: "異常系 tenpaiJichasの値が不正",
 			args: args{
 				kyokuResultId: KyokuResultId(uuid.New()),
-				gameStatusId:  gamestatus.GameStatusId(uuid.New()),
-				baKyokuHonba: FirstPtoV(bakyokuhonba.NewBaKyokuHonba(
-					bakyokuhonba.Nan, 1, 1,
+				gameStatusId:  gs.GameStatusId(uuid.New()),
+				baKyokuHonba: FirstPtoV(bkh.NewBaKyokuHonba(
+					bkh.Nan, 1, 1,
 				)),
-				riichiJichas: map[jicha.Jicha]struct{}{
+				riichiJichas: map[jc.Jicha]struct{}{
 					toncha: {}, nancha: {},
 				},
 				ronWinnerJicha: nil,
 				ronLoserJicha:  nil,
 				tsumoJicha:     nil,
-				tenpaiJichas:   &map[jicha.Jicha]struct{}{
-					toncha: {}, nancha: {}, jicha.Jicha("Sha"): {},
+				tenpaiJichas:   &map[jc.Jicha]struct{}{
+					toncha: {}, nancha: {}, jc.Jicha("Sha"): {},
 				},
 				hanFu:          nil,
 			},
@@ -138,18 +138,18 @@ func TestNewKyokuResult(t *testing.T) {
 			name: "異常系 ronWinnerJichaのみに値が入っている",
 			args: args{
 				kyokuResultId: KyokuResultId(uuid.New()),
-				gameStatusId:  gamestatus.GameStatusId(uuid.New()),
-				baKyokuHonba: FirstPtoV(bakyokuhonba.NewBaKyokuHonba(
-					bakyokuhonba.Ton, 2, 3,
+				gameStatusId:  gs.GameStatusId(uuid.New()),
+				baKyokuHonba: FirstPtoV(bkh.NewBaKyokuHonba(
+					bkh.Ton, 2, 3,
 				)),
-				riichiJichas: map[jicha.Jicha]struct{}{
+				riichiJichas: map[jc.Jicha]struct{}{
 					toncha: {}, nancha: {}, shacha: {}, pecha:  {},
 				},
 				ronWinnerJicha: &toncha,
 				ronLoserJicha:  nil,
 				tsumoJicha:     nil,
 				tenpaiJichas:   nil,
-				hanFu:          FirstPtoP(hanfu.NewHanFu(hanfu.Han1, hanfu.Fu40)),
+				hanFu:          FirstPtoP(hf.NewHanFu(hf.Han1, hf.Fu40)),
 			},
 			wantErr: true,
 		},
@@ -157,20 +157,20 @@ func TestNewKyokuResult(t *testing.T) {
 			name: "異常系 ronとtenpaiの両方に値が入っている",
 			args: args{
 				kyokuResultId: KyokuResultId(uuid.New()),
-				gameStatusId:  gamestatus.GameStatusId(uuid.New()),
-				baKyokuHonba: FirstPtoV(bakyokuhonba.NewBaKyokuHonba(
-					bakyokuhonba.Ton, 2, 3,
+				gameStatusId:  gs.GameStatusId(uuid.New()),
+				baKyokuHonba: FirstPtoV(bkh.NewBaKyokuHonba(
+					bkh.Ton, 2, 3,
 				)),
-				riichiJichas: map[jicha.Jicha]struct{}{
+				riichiJichas: map[jc.Jicha]struct{}{
 					toncha: {}, nancha: {},
 				},
 				ronWinnerJicha: &toncha,
 				ronLoserJicha:  &nancha,
 				tsumoJicha:     nil,
-				tenpaiJichas:  	&map[jicha.Jicha]struct{}{
+				tenpaiJichas:  	&map[jc.Jicha]struct{}{
 					toncha: {}, nancha: {}, shacha: {},
 				},
-				hanFu:          FirstPtoP(hanfu.NewHanFu(hanfu.Han1, hanfu.Fu40)),
+				hanFu:          FirstPtoP(hf.NewHanFu(hf.Han1, hf.Fu40)),
 			},
 			wantErr: true,
 		},
@@ -178,18 +178,18 @@ func TestNewKyokuResult(t *testing.T) {
 			name: "異常系 ronWinnerJichaとronLoserJichaが同じ",
 			args: args{
 				kyokuResultId: KyokuResultId(uuid.New()),
-				gameStatusId:  gamestatus.GameStatusId(uuid.New()),
-				baKyokuHonba: FirstPtoV(bakyokuhonba.NewBaKyokuHonba(
-					bakyokuhonba.Ton, 2, 3,
+				gameStatusId:  gs.GameStatusId(uuid.New()),
+				baKyokuHonba: FirstPtoV(bkh.NewBaKyokuHonba(
+					bkh.Ton, 2, 3,
 				)),
-				riichiJichas: map[jicha.Jicha]struct{}{
+				riichiJichas: map[jc.Jicha]struct{}{
 					toncha: {}, nancha: {}, shacha: {}, pecha:  {},
 				},
 				ronWinnerJicha: &toncha,
 				ronLoserJicha:  &toncha2,
 				tsumoJicha:     nil,
 				tenpaiJichas:   nil,
-				hanFu:          FirstPtoP(hanfu.NewHanFu(hanfu.Han1, hanfu.Fu40)),
+				hanFu:          FirstPtoP(hf.NewHanFu(hf.Han1, hf.Fu40)),
 			},
 			wantErr: true,
 		},
@@ -197,20 +197,20 @@ func TestNewKyokuResult(t *testing.T) {
 			name: "異常系 ryukyokuしているのにhanfuが入っている",
 			args: args{
 				kyokuResultId: KyokuResultId(uuid.New()),
-				gameStatusId:  gamestatus.GameStatusId(uuid.New()),
-				baKyokuHonba: FirstPtoV(bakyokuhonba.NewBaKyokuHonba(
-					bakyokuhonba.Nan, 1, 1,
+				gameStatusId:  gs.GameStatusId(uuid.New()),
+				baKyokuHonba: FirstPtoV(bkh.NewBaKyokuHonba(
+					bkh.Nan, 1, 1,
 				)),
-				riichiJichas: map[jicha.Jicha]struct{}{
+				riichiJichas: map[jc.Jicha]struct{}{
 					toncha: {}, nancha: {},
 				},
 				ronWinnerJicha: nil,
 				ronLoserJicha:  nil,
 				tsumoJicha:     nil,
-				tenpaiJichas:   &map[jicha.Jicha]struct{}{
+				tenpaiJichas:   &map[jc.Jicha]struct{}{
 					toncha: {}, nancha: {}, shacha: {},
 				},
-				hanFu:          FirstPtoP(hanfu.NewHanFu(hanfu.Han1, hanfu.Fu40)),
+				hanFu:          FirstPtoP(hf.NewHanFu(hf.Han1, hf.Fu40)),
 			},
 			wantErr: true,
 		},
@@ -218,11 +218,11 @@ func TestNewKyokuResult(t *testing.T) {
 			name: "異常系 ronなのにhanfuがない",
 			args: args{
 				kyokuResultId: KyokuResultId(uuid.New()),
-				gameStatusId:  gamestatus.GameStatusId(uuid.New()),
-				baKyokuHonba: FirstPtoV(bakyokuhonba.NewBaKyokuHonba(
-					bakyokuhonba.Ton, 2, 3,
+				gameStatusId:  gs.GameStatusId(uuid.New()),
+				baKyokuHonba: FirstPtoV(bkh.NewBaKyokuHonba(
+					bkh.Ton, 2, 3,
 				)),
-				riichiJichas: map[jicha.Jicha]struct{}{
+				riichiJichas: map[jc.Jicha]struct{}{
 					toncha: {}, nancha: {}, shacha: {}, pecha:  {},
 				},
 				ronWinnerJicha: &toncha,
@@ -237,17 +237,17 @@ func TestNewKyokuResult(t *testing.T) {
 			name: "異常系 tenpaiJichasとriichiJichasの包含関係がおかしい",
 			args: args{
 				kyokuResultId: KyokuResultId(uuid.New()),
-				gameStatusId:  gamestatus.GameStatusId(uuid.New()),
-				baKyokuHonba: FirstPtoV(bakyokuhonba.NewBaKyokuHonba(
-					bakyokuhonba.Nan, 1, 1,
+				gameStatusId:  gs.GameStatusId(uuid.New()),
+				baKyokuHonba: FirstPtoV(bkh.NewBaKyokuHonba(
+					bkh.Nan, 1, 1,
 				)),
-				riichiJichas: map[jicha.Jicha]struct{}{
+				riichiJichas: map[jc.Jicha]struct{}{
 					toncha: {}, nancha: {}, pecha: {},
 				},
 				ronWinnerJicha: nil,
 				ronLoserJicha:  nil,
 				tsumoJicha:     nil,
-				tenpaiJichas:   &map[jicha.Jicha]struct{}{
+				tenpaiJichas:   &map[jc.Jicha]struct{}{
 					toncha: {}, nancha: {}, shacha: {},
 				},
 				hanFu:          nil,
