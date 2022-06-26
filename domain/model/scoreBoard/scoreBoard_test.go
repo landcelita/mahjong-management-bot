@@ -23,87 +23,87 @@ func TestNewScoreBoard(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name:    	"正常系 負の得点の人がいる場合",
-			args:    	args{
-				scoreBoardId:	scoreBoardId,
-				scores:			map[jicha.Jicha]score.Score{
-					jicha.Toncha: First(score.NewScore(-100)),
-					jicha.Nancha: First(score.NewScore(0)),
-					jicha.Shacha: First(score.NewScore(0)),
-					jicha.Pecha: First(score.NewScore(100100)),
+			name: "正常系 負の得点の人がいる場合",
+			args: args{
+				scoreBoardId: scoreBoardId,
+				scores: map[jicha.Jicha]score.Score{
+					jicha.Toncha: FirstPtoV(score.NewScore(-100)),
+					jicha.Nancha: FirstPtoV(score.NewScore(0)),
+					jicha.Shacha: FirstPtoV(score.NewScore(0)),
+					jicha.Pecha:  FirstPtoV(score.NewScore(100100)),
 				},
-				kyotaku:		First(score.NewScore(0)),
+				kyotaku: FirstPtoV(score.NewScore(0)),
 			},
-			wantErr:	false,
+			wantErr: false,
 		},
 		{
-			name:    	"正常系 負の得点の人が二人いる場合",
-			args:    	args{
-				scoreBoardId:	scoreBoardId,
-				scores:			map[jicha.Jicha]score.Score{
-					jicha.Toncha: First(score.NewScore(-100)),
-					jicha.Nancha: First(score.NewScore(-100000)),
-					jicha.Shacha: First(score.NewScore(0)),
-					jicha.Pecha: First(score.NewScore(100100)),
+			name: "正常系 負の得点の人が二人いる場合",
+			args: args{
+				scoreBoardId: scoreBoardId,
+				scores: map[jicha.Jicha]score.Score{
+					jicha.Toncha: FirstPtoV(score.NewScore(-100)),
+					jicha.Nancha: FirstPtoV(score.NewScore(-100000)),
+					jicha.Shacha: FirstPtoV(score.NewScore(0)),
+					jicha.Pecha:  FirstPtoV(score.NewScore(100100)),
 				},
-				kyotaku:		First(score.NewScore(100000)),
+				kyotaku: FirstPtoV(score.NewScore(100000)),
 			},
-			wantErr:	false,
+			wantErr: false,
 		},
 		{
-			name:    	"異常系 合計得点が100000でない場合",
-			args:    	args{
-				scoreBoardId:	scoreBoardId,
-				scores:			map[jicha.Jicha]score.Score{
-					jicha.Toncha: First(score.NewScore(25000)),
-					jicha.Nancha: First(score.NewScore(25000)),
-					jicha.Shacha: First(score.NewScore(25000)),
-					jicha.Pecha: First(score.NewScore(25000)),
+			name: "異常系 合計得点が100000でない場合",
+			args: args{
+				scoreBoardId: scoreBoardId,
+				scores: map[jicha.Jicha]score.Score{
+					jicha.Toncha: FirstPtoV(score.NewScore(25000)),
+					jicha.Nancha: FirstPtoV(score.NewScore(25000)),
+					jicha.Shacha: FirstPtoV(score.NewScore(25000)),
+					jicha.Pecha:  FirstPtoV(score.NewScore(25000)),
 				},
-				kyotaku:		First(score.NewScore(1000)),
+				kyotaku: FirstPtoV(score.NewScore(1000)),
 			},
-			wantErr:	true,
+			wantErr: true,
 		},
 		{
-			name:    	"異常系 kyoutakuが負な場合",
-			args:    	args{
-				scoreBoardId:	scoreBoardId,
-				scores:			map[jicha.Jicha]score.Score{
-					jicha.Toncha: First(score.NewScore(25000)),
-					jicha.Nancha: First(score.NewScore(25000)),
-					jicha.Shacha: First(score.NewScore(25000)),
-					jicha.Pecha: First(score.NewScore(26000)),
+			name: "異常系 kyoutakuが負な場合",
+			args: args{
+				scoreBoardId: scoreBoardId,
+				scores: map[jicha.Jicha]score.Score{
+					jicha.Toncha: FirstPtoV(score.NewScore(25000)),
+					jicha.Nancha: FirstPtoV(score.NewScore(25000)),
+					jicha.Shacha: FirstPtoV(score.NewScore(25000)),
+					jicha.Pecha:  FirstPtoV(score.NewScore(26000)),
 				},
-				kyotaku:		First(score.NewScore(-1000)),
+				kyotaku: FirstPtoV(score.NewScore(-1000)),
 			},
-			wantErr:	true,
+			wantErr: true,
 		},
 		{
-			name:    	"異常系 scoreが4つ分指定されていない場合",
-			args:    	args{
-				scoreBoardId:	scoreBoardId,
-				scores:			map[jicha.Jicha]score.Score{
-					jicha.Toncha: First(score.NewScore(25000)),
-					jicha.Nancha: First(score.NewScore(25000)),
-					jicha.Shacha: First(score.NewScore(25000)),
+			name: "異常系 scoreが4つ分指定されていない場合",
+			args: args{
+				scoreBoardId: scoreBoardId,
+				scores: map[jicha.Jicha]score.Score{
+					jicha.Toncha: FirstPtoV(score.NewScore(25000)),
+					jicha.Nancha: FirstPtoV(score.NewScore(25000)),
+					jicha.Shacha: FirstPtoV(score.NewScore(25000)),
 				},
-				kyotaku:		First(score.NewScore(25000)),
+				kyotaku: FirstPtoV(score.NewScore(25000)),
 			},
-			wantErr:	true,
+			wantErr: true,
 		},
 		{
-			name:    	"異常系 playerの形式が間違っている場合",
-			args:    	args{
-				scoreBoardId:	scoreBoardId,
-				scores:			map[jicha.Jicha]score.Score{
-					jicha.Toncha: First(score.NewScore(25000)),
-					jicha.Nancha: First(score.NewScore(25000)),
-					jicha.Shacha: First(score.NewScore(25000)),
-					jicha.Jicha("Nan"): First(score.NewScore(0)),
+			name: "異常系 playerの形式が間違っている場合",
+			args: args{
+				scoreBoardId: scoreBoardId,
+				scores: map[jicha.Jicha]score.Score{
+					jicha.Toncha:       FirstPtoV(score.NewScore(25000)),
+					jicha.Nancha:       FirstPtoV(score.NewScore(25000)),
+					jicha.Shacha:       FirstPtoV(score.NewScore(25000)),
+					jicha.Jicha("Nan"): FirstPtoV(score.NewScore(0)),
 				},
-				kyotaku:		First(score.NewScore(25000)),
+				kyotaku: FirstPtoV(score.NewScore(25000)),
 			},
-			wantErr:	true,
+			wantErr: true,
 		},
 	}
 	for _, tt := range tests {
