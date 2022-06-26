@@ -16,37 +16,37 @@ func TestNewScore(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name:    "ok 1",
+			name:    "正常系 負",
 			args:    args{scoreInt: -100},
 			want:    &Score{score: -100},
 			wantErr: false,
 		},
 		{
-			name:    "ok 2",
+			name:    "正常系 0",
 			args:    args{scoreInt: 0},
 			want:    &Score{score: 0},
 			wantErr: false,
 		},
 		{
-			name:    "ok 3",
+			name:    "正常系 正",
 			args:    args{scoreInt: 10000000},
 			want:    &Score{score: 10000000},
 			wantErr: false,
 		},
 		{
-			name:    "ng 1",
+			name:    "異常系 100の倍数でない",
 			args:    args{scoreInt: 15},
 			want:    nil,
 			wantErr: true,
 		},
 		{
-			name:    "ng 2",
+			name:    "異常系 100の倍数でない",
 			args:    args{scoreInt: 1999999},
 			want:    nil,
 			wantErr: true,
 		},
 		{
-			name:    "ng 3",
+			name:    "異常系 100の倍数でない",
 			args:    args{scoreInt: -199},
 			want:    nil,
 			wantErr: true,
@@ -80,19 +80,19 @@ func TestScore_Add(t *testing.T) {
 		want   Score
 	}{
 		{
-			name:   "test 1",
+			name:   "正と正の和",
 			fields: fields{score: 100},
 			args:   args{Score{score: 1000}},
 			want:   Score{score: 1100},
 		},
 		{
-			name:   "test 2",
+			name:   "正と負の和が0",
 			fields: fields{score: -1000},
 			args:   args{Score{score: 1000}},
 			want:   Score{score: 0},
 		},
 		{
-			name:   "test 3",
+			name:   "正と負の和が負",
 			fields: fields{score: 100000},
 			args:   args{Score{score: -10000000}},
 			want:   Score{score: -9900000},
@@ -124,19 +124,19 @@ func TestScore_Equals(t *testing.T) {
 		want   bool
 	}{
 		{
-			name:   "equal 1",
+			name:   "等しい場合 正",
 			fields: fields{score: 10000},
 			args:   args{otherScore: Score{score: 10000}},
 			want:   true,
 		},
 		{
-			name:   "equal 2",
+			name:   "等しい場合 負",
 			fields: fields{score: -100},
 			args:   args{otherScore: Score{score: -100}},
 			want:   true,
 		},
 		{
-			name:   "not equal 1",
+			name:   "異なる場合 正と負",
 			fields: fields{score: 10000},
 			args:   args{otherScore: Score{score: -10000}},
 			want:   false,
@@ -168,19 +168,19 @@ func TestScore_LessThan(t *testing.T) {
 		want   bool
 	}{
 		{
-			name:   "not less 1",
+			name:   "引数と等しい",
 			fields: fields{score: 10000},
 			args:   args{otherScore: Score{score: 10000}},
 			want:   false,
 		},
 		{
-			name:   "not less 2",
+			name:   "引数より大きい",
 			fields: fields{score: -100},
 			args:   args{otherScore: Score{score: -1000}},
 			want:   false,
 		},
 		{
-			name:   "less 1",
+			name:   "引数より小さい",
 			fields: fields{score: -10000},
 			args:   args{otherScore: Score{score: -100}},
 			want:   true,

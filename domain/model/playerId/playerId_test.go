@@ -22,43 +22,43 @@ func TestNewPlayerId(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name:		"ok 1",
+			name:		"正常系 数字と英大文字を両方含む",
 			args:		args{value: s[0]},
 			want:		&w[0],
 			wantErr: 	false,
 		},
 		{
-			name:		"ok 2",
+			name:		"正常系 数字のみ",
 			args:		args{value: s[1]},
 			want:		&w[1],
 			wantErr:	false,
 		},
 		{
-			name:		"ng 1",
+			name:		"異常系 空文字列",
 			args:		args{value: s[2]},
 			want:		nil,
 			wantErr:	true,
 		},
 		{
-			name:		"ng 2",
+			name:		"異常系 英小文字を含む",
 			args: 		args{value: s[3]},
 			want:		nil,
 			wantErr:	true,
 		},
 		{
-			name:		"ng 3",
+			name:		"異常系 日本語を含む",
 			args:		args{value: s[4]},
 			want:		nil,
 			wantErr:	true,
 		},
 		{
-			name:		"ng 4",
+			name:		"異常系 空白を含む",
 			args:		args{value: s[5]},
 			want:		nil,
 			wantErr:	true,
 		},
 		{
-			name:		"ng 5",
+			name:		"異常系 記号を含む",
 			args:		args{value: s[6]},
 			want:		nil,
 			wantErr:	true,

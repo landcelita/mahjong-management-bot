@@ -61,49 +61,49 @@ func TestNewBaKyokuHonba(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name:    "Correct 1",
+			name:    "正常系 Ton 1 10",
 			args:    args{ba: Ton, kyoku: 1, honba: 10},
 			want:    &bkh[0],
 			wantErr: false,
 		},
 		{
-			name:    "Correct 2",
+			name:    "正常系 Ton 2 10",
 			args:    args{ba: Ton, kyoku: 2, honba: 10},
 			want:    &bkh[1],
 			wantErr: false,
 		},
 		{
-			name:    "Correct 3",
+			name:    "正常系 Ton 3 10",
 			args:    args{ba: Ton, kyoku: 3, honba: 0},
 			want:    &bkh[2],
 			wantErr: false,
 		},
 		{
-			name:    "Correct 4",
+			name:    "正常系 Ton 4 10",
 			args:    args{ba: Ton, kyoku: 4, honba: 0},
 			want:    &bkh[3],
 			wantErr: false,
 		},
 		{
-			name:    "Correct 5",
+			name:    "正常系 Nan 4 10",
 			args:    args{ba: Nan, kyoku: 4, honba: 10},
 			want:    &bkh[4],
 			wantErr: false,
 		},
 		{
-			name:    "Incorrect 1",
+			name:    "異常系 baが範囲外",
 			args:    args{ba: 0, kyoku: 1, honba: 1},
 			want:    nil,
 			wantErr: true,
 		},
 		{
-			name:    "Incorrect 2",
+			name:    "異常系 kyokuが範囲外",
 			args:    args{ba: Ton, kyoku: 0, honba: 1},
 			want:    nil,
 			wantErr: true,
 		},
 		{
-			name:    "Incorrect 3",
+			name:    "異常系 kyokuが範囲外",
 			args:    args{ba: Nan, kyoku: 5, honba: 10},
 			want:    nil,
 			wantErr: true,
@@ -139,31 +139,31 @@ func TestBaKyokuHonba_EqualsBaKyoku(t *testing.T) {
 		want   bool
 	}{
 		{
-			name:   "true 1",
+			name:   "等しい場合 Ton 1 10",
 			fields: fields{ba: Ton, kyoku: 1, honba: 10},
 			args:   args{otherBaKyokuHonba: BaKyokuHonba{ba: Ton, kyoku: 1, honba: 0}},
 			want:   true,
 		},
 		{
-			name:   "true 2",
+			name:   "等しい場合 Nan 3 10",
 			fields: fields{ba: Nan, kyoku: 3, honba: 10},
 			args:   args{otherBaKyokuHonba: BaKyokuHonba{ba: Nan, kyoku: 3, honba: 0}},
 			want:   true,
 		},
 		{
-			name:   "true 3",
+			name:   "等しい場合 Nan 4 0",
 			fields: fields{ba: Nan, kyoku: 4, honba: 0},
 			args:   args{otherBaKyokuHonba: BaKyokuHonba{ba: Nan, kyoku: 4, honba: 0}},
 			want:   true,
 		},
 		{
-			name:   "false 1",
+			name:   "異なる場合 Ton 1 1",
 			fields: fields{ba: Ton, kyoku: 1, honba: 1},
 			args:   args{otherBaKyokuHonba: BaKyokuHonba{ba: Ton, kyoku: 4, honba: 1}},
 			want:   false,
 		},
 		{
-			name:   "false 2",
+			name:   "異なる場合 Nan 2 1",
 			fields: fields{ba: Nan, kyoku: 2, honba: 1},
 			args:   args{otherBaKyokuHonba: BaKyokuHonba{ba: Ton, kyoku: 2, honba: 1}},
 			want:   false,
@@ -201,25 +201,25 @@ func TestBaKyokuHonba_IncrementBaKyoku(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name:    "Correct 1",
+			name:    "正常系 Ton 4 10",
 			fields:  fields{ba: Ton, kyoku: 4, honba: 10},
 			want:    &bkh[0],
 			wantErr: false,
 		},
 		{
-			name:    "Correct 2",
+			name:    "正常系 Nan 3 1",
 			fields:  fields{ba: Nan, kyoku: 3, honba: 1},
 			want:    &bkh[1],
 			wantErr: false,
 		},
 		{
-			name:    "Correct 3",
+			name:    "正常系 Ton 1 0",
 			fields:  fields{ba: Ton, kyoku: 1, honba: 0},
 			want:    &bkh[2],
 			wantErr: false,
 		},
 		{
-			name:    "Incorrect 1",
+			name:    "異常系 これ以上ba,kyokuを進められない場合",
 			fields:  fields{ba: Nan, kyoku: 4, honba: 10},
 			want:    nil,
 			wantErr: true,
@@ -262,19 +262,19 @@ func TestBaKyokuHonba_IncrementHonba(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name:    "Correct 1",
+			name:    "正常系 Ton 4 0",
 			fields:  fields{ba: Ton, kyoku: 4, honba: 0},
 			want:    &bkh[0],
 			wantErr: false,
 		},
 		{
-			name:    "Correct 2",
+			name:    "正常系 1 4",
 			fields:  fields{ba: Nan, kyoku: 1, honba: 4},
 			want:    &bkh[1],
 			wantErr: false,
 		},
 		{
-			name:    "Correct 3",
+			name:    "正常系 Nan 4 9",
 			fields:  fields{ba: Nan, kyoku: 4, honba: 9},
 			want:    &bkh[2],
 			wantErr: false,
@@ -315,43 +315,43 @@ func TestBaKyokuHonba_IsLaterThanOrSameFor(t *testing.T) {
 		want   bool
 	}{
 		{
-			name:   "true 1",
+			name:   "引数より後の局の場合 baのみ異なる",
 			fields: fields{ba: Nan, kyoku: 1, honba: 0},
 			args:   args{otherBaKyokuHonba: BaKyokuHonba{ba: Ton, kyoku: 1, honba: 0}},
 			want:   true,
 		},
 		{
-			name:   "true 2",
+			name:   "引数より後の局の場合 kyokuのみ異なる",
 			fields: fields{ba: Ton, kyoku: 3, honba: 0},
 			args:   args{otherBaKyokuHonba: BaKyokuHonba{ba: Ton, kyoku: 1, honba: 0}},
 			want:   true,
 		},
 		{
-			name:   "true 3",
+			name:   "引数より後の局の場合 honbaのみ異なる",
 			fields: fields{ba: Ton, kyoku: 1, honba: 10},
 			args:   args{otherBaKyokuHonba: BaKyokuHonba{ba: Ton, kyoku: 1, honba: 0}},
 			want:   true,
 		},
 		{
-			name:   "true 4",
+			name:   "引数と同じ場合",
 			fields: fields{ba: Nan, kyoku: 4, honba: 10},
 			args:   args{otherBaKyokuHonba: BaKyokuHonba{ba: Nan, kyoku: 4, honba: 10}},
 			want:   true,
 		},
 		{
-			name:   "false 1",
+			name:   "引数より前の局の場合 baのみ異なる",
 			fields: fields{ba: Ton, kyoku: 1, honba: 0},
 			args:   args{otherBaKyokuHonba: BaKyokuHonba{ba: Nan, kyoku: 1, honba: 0}},
 			want:   false,
 		},
 		{
-			name:   "false 2",
+			name:   "引数より前の局の場合 kyokuのみ異なる",
 			fields: fields{ba: Ton, kyoku: 1, honba: 0},
 			args:   args{otherBaKyokuHonba: BaKyokuHonba{ba: Ton, kyoku: 2, honba: 0}},
 			want:   false,
 		},
 		{
-			name:   "false 1",
+			name:   "引数より前の局の場合 honbaのみ異なる",
 			fields: fields{ba: Ton, kyoku: 1, honba: 9},
 			args:   args{otherBaKyokuHonba: BaKyokuHonba{ba: Ton, kyoku: 1, honba: 10}},
 			want:   false,
