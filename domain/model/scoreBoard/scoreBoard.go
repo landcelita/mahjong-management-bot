@@ -58,3 +58,7 @@ func NewScoreBoard(
 
 	return &scoreBoard, nil
 }
+
+func (scoreBoard *ScoreBoard) ID() ScoreBoardId {
+	return scoreBoard.scoreBoardId
+}
