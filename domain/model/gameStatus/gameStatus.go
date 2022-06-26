@@ -40,8 +40,9 @@ func newGameStatus(
 		}
 	}
 
-	if nan10, _ := bakyokuhonba.NewBaKyokuHonba(bakyokuhonba.Nan, 1, 0); tonpuOrHanchan == tonpuorhanchan.Tonpu &&
-		baKyokuHonba.IsLaterThanOrSameFor(*nan10) {
+	if nan10, _ := bakyokuhonba.NewBaKyokuHonba(bakyokuhonba.Nan, 1, 0);
+	tonpuOrHanchan == tonpuorhanchan.Tonpu &&
+	baKyokuHonba.IsLaterThanOrSameFor(*nan10) {
 		return nil, fmt.Errorf("東風戦で南場に入ることはできません。")
 	}
 
@@ -114,4 +115,8 @@ func (gameStatus *GameStatus) AdvanceGameHonba() error {
 	gameStatus.baKyokuHonba = *nextBaKyokuHonba
 
 	return nil
+}
+
+func (gameStatus *GameStatus) ID() GameStatusId {
+	return gameStatus.gameStatusId
 }
