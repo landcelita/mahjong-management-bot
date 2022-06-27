@@ -6,7 +6,7 @@ import (
 	"github.com/google/uuid"
 	bkh "github.com/landcelita/mahjong-management-bot/domain/model/baKyokuHonba"
 	pid "github.com/landcelita/mahjong-management-bot/domain/model/playerId"
-	"github.com/landcelita/mahjong-management-bot/domain/model/tonpuOrHanchan"
+	toh "github.com/landcelita/mahjong-management-bot/domain/model/tonpuOrHanchan"
 	jc "github.com/landcelita/mahjong-management-bot/domain/model/jicha"
 )
 
@@ -16,7 +16,7 @@ type (
 	GameStatus struct {
 		gameStatusId  	GameStatusId
 		baKyokuHonba	bkh.BaKyokuHonba
-		tonpuOrHanchan 	tonpuorhanchan.TonpuOrHanchan
+		tonpuOrHanchan 	toh.TonpuOrHanchan
 		playerIds		map[jc.Jicha]pid.PlayerId
 		isActive		bool
 	}
@@ -25,7 +25,7 @@ type (
 func NewGameStatus(
 	gameStatusId	GameStatusId,
 	baKyokuHonba	bkh.BaKyokuHonba,
-	tonpuOrHanchan	tonpuorhanchan.TonpuOrHanchan,
+	tonpuOrHanchan	toh.TonpuOrHanchan,
 	playerIds		map[jc.Jicha]pid.PlayerId,
 	isActive		bool,
 ) (*GameStatus, error) {
@@ -41,7 +41,7 @@ func NewGameStatus(
 	}
 
 	if nan10, _ := bkh.NewBaKyokuHonba(bkh.Nan, 1, 0);
-	tonpuOrHanchan == tonpuorhanchan.Tonpu &&
+	tonpuOrHanchan == toh.Tonpu &&
 	baKyokuHonba.IsLaterThanOrSameFor(*nan10) {
 		return nil, fmt.Errorf("東風戦で南場に入ることはできません。")
 	}
@@ -57,8 +57,31 @@ func NewGameStatus(
 	return gameStatus, nil
 }
 
+func NewInitGameStatus(
+	tonpuOrHanchan		toh.TonpuOrHanchan,
+	playerIds			map[jc.Jicha]pid.PlayerId,
+) (*GameStatus, error) {
+	ton1, e1 := bkh.NewBaKyokuHonba(bkh.Ton, 1, 0)
+	if e1 != nil {
+		return nil, e1
+	}
+
+	gameStatus, e := NewGameStatus(
+		GameStatusId(uuid.New()),
+		*ton1,
+		tonpuOrHanchan,
+		playerIds,
+		true,
+	)
+	if e != nil {
+		return nil, e
+	}
+
+	return gameStatus, nil
+}
+
 func (gameStatus GameStatus) IsOlast() bool {
-	if gameStatus.tonpuOrHanchan == tonpuorhanchan.Tonpu {
+	if gameStatus.tonpuOrHanchan == toh.Tonpu {
 		if last, err := bkh.NewBaKyokuHonba(
 			bkh.Ton,
 			4,
@@ -68,7 +91,7 @@ func (gameStatus GameStatus) IsOlast() bool {
 		} else {
 			return false
 		}
-	} else if gameStatus.tonpuOrHanchan == tonpuorhanchan.Hanchan {
+	} else if gameStatus.tonpuOrHanchan == toh.Hanchan {
 		if last, err := bkh.NewBaKyokuHonba(
 			bkh.Nan,
 			4,
