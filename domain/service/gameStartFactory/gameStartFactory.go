@@ -42,29 +42,29 @@ func (gamestartfactory *GameStartFactory) StartNewGame(
 		jc.Pecha:		pechaid,
 	}
 
-	gameStatus, errgs := gs.NewInitGameStatus(
+	gameStatus, err := gs.NewInitGameStatus(
 		tonpuOrHanchan,
 		playerids,
 	)
-	if errgs != nil {
-		return nil, nil, errgs
+	if err != nil {
+		return nil, nil, err
 	}
 
-	initScore, erris := sc.NewScore(25000)
-	if erris != nil {
-		return nil, nil, erris
+	initScore, err := sc.NewScore(25000)
+	if err != nil {
+		return nil, nil, err
 	}
 
-	scoreBoard, errsb := sb.NewInitScoreBoard(*initScore)
-	if errsb != nil {
-		return nil, nil, errsb
+	scoreBoard, err := sb.NewInitScoreBoard(*initScore)
+	if err != nil {
+		return nil, nil, err
 	}
 
-	if e := gamestartfactory.gameStatusRepo.Upsert(gameStatus); e != nil {
-		return nil, nil, e
+	if err := gamestartfactory.gameStatusRepo.Upsert(gameStatus); err != nil {
+		return nil, nil, err
 	}
-	if e := gamestartfactory.scoreBoardRepo.Upsert(scoreBoard); e != nil {
-		return nil, nil, e
+	if err := gamestartfactory.scoreBoardRepo.Upsert(scoreBoard); err != nil {
+		return nil, nil, err
 	}
 
 	return gameStatus, scoreBoard, nil
