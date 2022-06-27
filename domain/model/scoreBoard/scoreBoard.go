@@ -58,3 +58,31 @@ func NewScoreBoard(
 
 	return &scoreBoard, nil
 }
+
+func NewInitScoreBoard(
+	initScore sc.Score,
+) (*ScoreBoard, error) {
+	initScores := map[jc.Jicha] sc.Score{
+		jc.Toncha:	initScore,
+		jc.Nancha:	initScore,
+		jc.Shacha:	initScore,
+		jc.Pecha:	initScore,
+	}
+	sc0, _ := sc.NewScore(0)
+
+	scoreBoard, err := NewScoreBoard(
+		ScoreBoardId(uuid.New()),
+		initScores,
+		*sc0,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return scoreBoard, nil
+}
+
+func (scoreBoard *ScoreBoard) ID() ScoreBoardId {
+	return scoreBoard.scoreBoardId
+}
