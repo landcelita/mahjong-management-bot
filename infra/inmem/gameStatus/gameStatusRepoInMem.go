@@ -17,6 +17,13 @@ func NewGameStatusRepoInMem() gs.GameStatusIRepo {
 	}
 }
 
+func (i *GameStatusRepoInMem) GetAll() (map[gs.GameStatusId]*gs.GameStatus, error) {
+	i.mutex.RLock()
+	defer i.mutex.RUnlock()
+
+	return i.Data, nil
+}
+
 func (i *GameStatusRepoInMem) FindById(gameStatusId gs.GameStatusId) (*gs.GameStatus, error) {
 	i.mutex.RLock()
 	defer i.mutex.RUnlock()

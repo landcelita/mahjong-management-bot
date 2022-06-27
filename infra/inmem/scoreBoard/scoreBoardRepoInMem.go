@@ -17,6 +17,13 @@ func NewScoreBoardRepoInMem() sb.ScoreBoardIRepo {
 	}
 }
 
+func (i *ScoreBoardRepoInMem) GetAll() (map[sb.ScoreBoardId]*sb.ScoreBoard, error) {
+	i.mutex.RLock()
+	defer i.mutex.RUnlock()
+
+	return i.Data, nil
+}
+
 func (i *ScoreBoardRepoInMem) FindById(scoreBoardId sb.ScoreBoardId) (*sb.ScoreBoard, error) {
 	i.mutex.RLock()
 	defer i.mutex.RUnlock()
