@@ -12,6 +12,14 @@ import (
 
 type KyokuResultId uuid.UUID
 
+type KyokuEndType string
+
+const (
+	Ron			= KyokuEndType("Ron")
+	Tsumo		= KyokuEndType("Tsumo")
+	Ryukyoku	= KyokuEndType("Ryukyoku")
+)
+
 type (
 	KyokuResult struct {
 		kyokuResultId	KyokuResultId
@@ -99,4 +107,14 @@ func NewKyokuResult(
 	}
 
 	return kyokuResult, nil
+}
+
+func GetKyokuEndType(kyokuResult *KyokuResult) KyokuEndType {
+	if kyokuResult.ronWinnerJicha != nil {
+		return Ron
+	} else if kyokuResult.tsumoJicha != nil {
+		return Tsumo
+	} else {
+		return Ryukyoku
+	}
 }

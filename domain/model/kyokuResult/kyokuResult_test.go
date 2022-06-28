@@ -11,13 +11,15 @@ import (
 	. "github.com/landcelita/mahjong-management-bot/testutil"
 )
 
-func TestNewKyokuResult(t *testing.T) {
-	toncha := jc.Toncha
-	nancha := jc.Nancha
-	shacha := jc.Shacha
-	pecha := jc.Pecha
-	toncha2 := jc.Toncha
+var (
+	toncha = jc.Toncha
+	nancha = jc.Nancha
+	shacha = jc.Shacha
+	pecha = jc.Pecha
+	toncha2 = jc.Toncha
+)
 
+func TestNewKyokuResult(t *testing.T) {
 	type args struct {
 		kyokuResultId  KyokuResultId
 		gameStatusId   gs.GameStatusId
@@ -43,7 +45,7 @@ func TestNewKyokuResult(t *testing.T) {
 					bkh.Ton, 2, 3,
 				)),
 				riichiJichas: map[jc.Jicha]struct{}{
-					toncha: {}, nancha: {}, shacha: {}, pecha:  {},
+					toncha: {}, nancha: {}, shacha: {}, pecha: {},
 				},
 				ronWinnerJicha: &toncha,
 				ronLoserJicha:  &nancha,
@@ -61,8 +63,7 @@ func TestNewKyokuResult(t *testing.T) {
 				baKyokuHonba: FirstPtoV(bkh.NewBaKyokuHonba(
 					bkh.Nan, 4, 1,
 				)),
-				riichiJichas: map[jc.Jicha]struct{}{
-				},
+				riichiJichas:   map[jc.Jicha]struct{}{},
 				ronWinnerJicha: nil,
 				ronLoserJicha:  nil,
 				tsumoJicha:     &nancha,
@@ -85,10 +86,10 @@ func TestNewKyokuResult(t *testing.T) {
 				ronWinnerJicha: nil,
 				ronLoserJicha:  nil,
 				tsumoJicha:     nil,
-				tenpaiJichas:   &map[jc.Jicha]struct{}{
+				tenpaiJichas: &map[jc.Jicha]struct{}{
 					toncha: {}, nancha: {}, shacha: {},
 				},
-				hanFu:          nil,
+				hanFu: nil,
 			},
 			wantErr: false,
 		},
@@ -106,10 +107,10 @@ func TestNewKyokuResult(t *testing.T) {
 				ronWinnerJicha: nil,
 				ronLoserJicha:  nil,
 				tsumoJicha:     nil,
-				tenpaiJichas:   &map[jc.Jicha]struct{}{
+				tenpaiJichas: &map[jc.Jicha]struct{}{
 					toncha: {}, nancha: {}, shacha: {},
 				},
-				hanFu:          nil,
+				hanFu: nil,
 			},
 			wantErr: true,
 		},
@@ -127,10 +128,10 @@ func TestNewKyokuResult(t *testing.T) {
 				ronWinnerJicha: nil,
 				ronLoserJicha:  nil,
 				tsumoJicha:     nil,
-				tenpaiJichas:   &map[jc.Jicha]struct{}{
+				tenpaiJichas: &map[jc.Jicha]struct{}{
 					toncha: {}, nancha: {}, jc.Jicha("Sha"): {},
 				},
-				hanFu:          nil,
+				hanFu: nil,
 			},
 			wantErr: true,
 		},
@@ -143,7 +144,7 @@ func TestNewKyokuResult(t *testing.T) {
 					bkh.Ton, 2, 3,
 				)),
 				riichiJichas: map[jc.Jicha]struct{}{
-					toncha: {}, nancha: {}, shacha: {}, pecha:  {},
+					toncha: {}, nancha: {}, shacha: {}, pecha: {},
 				},
 				ronWinnerJicha: &toncha,
 				ronLoserJicha:  nil,
@@ -167,10 +168,10 @@ func TestNewKyokuResult(t *testing.T) {
 				ronWinnerJicha: &toncha,
 				ronLoserJicha:  &nancha,
 				tsumoJicha:     nil,
-				tenpaiJichas:  	&map[jc.Jicha]struct{}{
+				tenpaiJichas: &map[jc.Jicha]struct{}{
 					toncha: {}, nancha: {}, shacha: {},
 				},
-				hanFu:          FirstPtoP(hf.NewHanFu(hf.Han1, hf.Fu40)),
+				hanFu: FirstPtoP(hf.NewHanFu(hf.Han1, hf.Fu40)),
 			},
 			wantErr: true,
 		},
@@ -183,7 +184,7 @@ func TestNewKyokuResult(t *testing.T) {
 					bkh.Ton, 2, 3,
 				)),
 				riichiJichas: map[jc.Jicha]struct{}{
-					toncha: {}, nancha: {}, shacha: {}, pecha:  {},
+					toncha: {}, nancha: {}, shacha: {}, pecha: {},
 				},
 				ronWinnerJicha: &toncha,
 				ronLoserJicha:  &toncha2,
@@ -207,10 +208,10 @@ func TestNewKyokuResult(t *testing.T) {
 				ronWinnerJicha: nil,
 				ronLoserJicha:  nil,
 				tsumoJicha:     nil,
-				tenpaiJichas:   &map[jc.Jicha]struct{}{
+				tenpaiJichas: &map[jc.Jicha]struct{}{
 					toncha: {}, nancha: {}, shacha: {},
 				},
-				hanFu:          FirstPtoP(hf.NewHanFu(hf.Han1, hf.Fu40)),
+				hanFu: FirstPtoP(hf.NewHanFu(hf.Han1, hf.Fu40)),
 			},
 			wantErr: true,
 		},
@@ -223,7 +224,7 @@ func TestNewKyokuResult(t *testing.T) {
 					bkh.Ton, 2, 3,
 				)),
 				riichiJichas: map[jc.Jicha]struct{}{
-					toncha: {}, nancha: {}, shacha: {}, pecha:  {},
+					toncha: {}, nancha: {}, shacha: {}, pecha: {},
 				},
 				ronWinnerJicha: &toncha,
 				ronLoserJicha:  &nancha,
@@ -247,10 +248,10 @@ func TestNewKyokuResult(t *testing.T) {
 				ronWinnerJicha: nil,
 				ronLoserJicha:  nil,
 				tsumoJicha:     nil,
-				tenpaiJichas:   &map[jc.Jicha]struct{}{
+				tenpaiJichas: &map[jc.Jicha]struct{}{
 					toncha: {}, nancha: {}, shacha: {},
 				},
-				hanFu:          nil,
+				hanFu: nil,
 			},
 			wantErr: true,
 		},
@@ -261,6 +262,88 @@ func TestNewKyokuResult(t *testing.T) {
 			if (err != nil) != tt.wantErr {
 				t.Errorf("NewKyokuResult() error = %v, wantErr %v", err, tt.wantErr)
 				return
+			}
+		})
+	}
+}
+
+func TestGetKyokuEndType(t *testing.T) {
+	type args struct {
+		kyokuResult *KyokuResult
+	}
+	tests := []struct {
+		name string
+		args args
+		want KyokuEndType
+	}{
+		{
+			name: "Ron Type",
+			args: args{
+				kyokuResult: FirstPtoP(NewKyokuResult(
+					KyokuResultId(uuid.New()),
+					gs.GameStatusId(uuid.New()),
+					FirstPtoV(bkh.NewBaKyokuHonba(
+						bkh.Ton, 2, 3,
+					)),
+					map[jc.Jicha]struct{}{
+						toncha: {}, nancha: {}, shacha: {}, pecha: {},
+					},
+					&toncha,
+					&nancha,
+					nil,
+					nil,
+					FirstPtoP(hf.NewHanFu(hf.Han1, hf.Fu40)),
+				)),
+			},
+			want: Ron,
+		},
+		{
+			name: "Tsumo Type",
+			args: args {
+				kyokuResult: FirstPtoP(NewKyokuResult(
+					KyokuResultId(uuid.New()),
+					gs.GameStatusId(uuid.New()),
+					FirstPtoV(bkh.NewBaKyokuHonba(
+						bkh.Nan, 4, 1,
+					)),
+					map[jc.Jicha]struct{}{},
+					nil,
+					nil,
+					&nancha,
+					nil,
+					FirstPtoP(hf.NewHanFu(hf.Han1, hf.Fu40)),
+				)),
+			},
+			want: Tsumo,
+		},
+		{
+			name: "Ryukyoku Type",
+			args: args {
+				kyokuResult: FirstPtoP(NewKyokuResult(
+					KyokuResultId(uuid.New()),
+					gs.GameStatusId(uuid.New()),
+					FirstPtoV(bkh.NewBaKyokuHonba(
+						bkh.Nan, 1, 1,
+					)),
+					map[jc.Jicha]struct{}{
+						toncha: {}, nancha: {},
+					},
+					nil,
+					nil,
+					nil,
+					&map[jc.Jicha]struct{}{
+						toncha: {}, nancha: {}, shacha: {},
+					},
+					nil,
+				)),
+			},
+			want: Ryukyoku,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := GetKyokuEndType(tt.args.kyokuResult); got != tt.want {
+				t.Errorf("GetKyokuEndType() = %v, want %v", got, tt.want)
 			}
 		})
 	}
