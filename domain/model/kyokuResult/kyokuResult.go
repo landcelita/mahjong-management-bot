@@ -167,6 +167,10 @@ func (kyokuResult *KyokuResult) WhoTenpai()  (*map[jicha.Jicha]struct{}, error) 
 	return &ret, nil
 }
 
+func (kyokuResult *KyokuResult) BKH() bkh.BaKyokuHonba {
+	return kyokuResult.baKyokuHonba
+}
+
 ///// unexported
 
 func (kyokuResult *KyokuResult) isTonchaRonWinner() bool {
