@@ -98,4 +98,7 @@ func (baKyokuHonba BaKyokuHonba) IncrementHonba() (*BaKyokuHonba, error) {
 	return &ret, nil
 }
 
+func (baKyokuHonba BaKyokuHonba) Honba() uint {
+	return baKyokuHonba.honba
+}
 

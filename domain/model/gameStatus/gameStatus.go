@@ -111,11 +111,11 @@ func (gameStatus *GameStatus) AdvanceGameBaKyoku() error {
 		return fmt.Errorf("オーラス時にBaKyokuを進めることはできません。")
 	}
 
-	playerIds_copy := gameStatus.playerIds
-	gameStatus.playerIds[jc.Toncha] = playerIds_copy[jc.Nancha]
-	gameStatus.playerIds[jc.Nancha] = playerIds_copy[jc.Shacha]
-	gameStatus.playerIds[jc.Shacha] = playerIds_copy[jc.Pecha]
-	gameStatus.playerIds[jc.Pecha] = playerIds_copy[jc.Toncha]
+	tmp := gameStatus.playerIds[jc.Toncha]
+	gameStatus.playerIds[jc.Toncha] = gameStatus.playerIds[jc.Nancha]
+	gameStatus.playerIds[jc.Nancha] = gameStatus.playerIds[jc.Shacha]
+	gameStatus.playerIds[jc.Shacha] = gameStatus.playerIds[jc.Pecha]
+	gameStatus.playerIds[jc.Pecha] = tmp
 
 	nextBaKyokuHonba, err := gameStatus.baKyokuHonba.IncrementBaKyoku()
 
@@ -138,6 +138,10 @@ func (gameStatus *GameStatus) AdvanceGameHonba() error {
 	gameStatus.baKyokuHonba = *nextBaKyokuHonba
 
 	return nil
+}
+
+func (gameStatus *GameStatus) GameOver() {
+	gameStatus.isActive = false
 }
 
 func (gameStatus *GameStatus) ID() GameStatusId {
