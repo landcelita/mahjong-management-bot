@@ -420,6 +420,24 @@ func TestKyokuResult_CalcBaseScore(t *testing.T) {
 			wantErr: false,
 		},
 		{
+			name: "正常系 TonchaがTsumo 2翻30符",
+			fields: fields{
+				KyokuResultId(uuid.New()),
+				gs.GameStatusId(uuid.New()),
+				FirstPtoV(bkh.NewBaKyokuHonba(
+					bkh.Nan, 4, 1,
+				)),
+				map[jicha.Jicha]struct{}{},
+				nil,
+				nil,
+				&toncha,
+				nil,
+				FirstPtoP(hf.NewHanFu(hf.Han2, hf.Fu30)),
+			},
+			want:    960,
+			wantErr: false,
+		},
+		{
 			name: "異常系 ryukyoku",
 			fields: fields{
 				KyokuResultId(uuid.New()),

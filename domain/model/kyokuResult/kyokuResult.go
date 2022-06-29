@@ -131,7 +131,7 @@ func (kyokuResult *KyokuResult) CalcBaseScore() (uint, error) {
 		return 0, fmt.Errorf("GetBaseScoreはTsumoかRonの場合のみ機能します。")
 	}
 
-	if kyokuResult.isTonchaRonWinner() || kyokuResult.isTonchaTenpai() {
+	if kyokuResult.isTonchaRonWinner() || kyokuResult.isTonchaTsumo() {
 		return kyokuResult.hanFu.CalcBaseScore(true), nil
 	} else {
 		return kyokuResult.hanFu.CalcBaseScore(false), nil
