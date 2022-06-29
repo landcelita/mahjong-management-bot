@@ -197,3 +197,41 @@ func TestScore_LessThan(t *testing.T) {
 		})
 	}
 }
+
+func TestScore_Mul(t *testing.T) {
+	type fields struct {
+		score int
+	}
+	type args struct {
+		n int
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		args   args
+		want   Score
+	}{
+		{
+			name: 	"200 x -1",
+			fields:	fields{ score: 200 },
+			args:	args{ n: -1 },
+			want:	Score{ score: -200 },
+		},
+		{
+			name:	"-3000 x -5",
+			fields:	fields{ score: -3000 },
+			args:	args{ n: -5 },
+			want:	Score{ score: 15000 },
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			score := Score{
+				score: tt.fields.score,
+			}
+			if got := score.Mul(tt.args.n); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Score.Mul() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
