@@ -5,13 +5,12 @@ import (
 	"strconv"
 	"testing"
 
+	"github.com/google/uuid"
 	bkh "github.com/landcelita/mahjong-management-bot/domain/model/baKyokuHonba"
 	jc "github.com/landcelita/mahjong-management-bot/domain/model/jicha"
 	pid "github.com/landcelita/mahjong-management-bot/domain/model/playerId"
 	toh "github.com/landcelita/mahjong-management-bot/domain/model/tonpuOrHanchan"
 	. "github.com/landcelita/mahjong-management-bot/testutil"
-
-	"github.com/google/uuid"
 )
 
 const testNum = 5

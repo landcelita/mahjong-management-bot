@@ -35,15 +35,15 @@ type (
 )
 
 func NewKyokuResult(
-	kyokuResultId	KyokuResultId,
-	gameStatusId	gs.GameStatusId,
-	baKyokuHonba	bkh.BaKyokuHonba,
-	riichiers		map[jicha.Jicha]struct{},
-	ronWinner		*jicha.Jicha,
-	ronLoser		*jicha.Jicha,
-	tsumoWinner		*jicha.Jicha,
-	tenpaiers		*map[jicha.Jicha]struct{},
-	hanFu			*hf.HanFu,
+	kyokuResultId KyokuResultId,
+	gameStatusId gs.GameStatusId,
+	baKyokuHonba bkh.BaKyokuHonba,
+	riichiers map[jicha.Jicha]struct{},
+	ronWinner *jicha.Jicha,
+	ronLoser *jicha.Jicha,
+	tsumoWinner *jicha.Jicha,
+	tenpaiers *map[jicha.Jicha]struct{},
+	hanFu *hf.HanFu,
 ) (*KyokuResult, error) {
 
 	for k := range riichiers {
@@ -173,7 +173,7 @@ func (kyokuResult *KyokuResult) WhoTenpai() (*map[jicha.Jicha]struct{}, error) {
 	return &ret, nil
 }
 
-func (kyokuResult *KyokuResult) WhoRiichi() (*map[jicha.Jicha]struct{}) {
+func (kyokuResult *KyokuResult) WhoRiichi() *map[jicha.Jicha]struct{} {
 	ret := make(map[jicha.Jicha]struct{})
 	for key, val := range kyokuResult.riichiers {
 		ret[key] = val
@@ -183,6 +183,12 @@ func (kyokuResult *KyokuResult) WhoRiichi() (*map[jicha.Jicha]struct{}) {
 
 func (kyokuResult *KyokuResult) BKH() bkh.BaKyokuHonba {
 	return kyokuResult.baKyokuHonba
+}
+
+func (kyokuResult *KyokuResult) IsTonchaRonOrTsumoOrTenpai() bool {
+	return kyokuResult.isTonchaRonWinner() ||
+		kyokuResult.isTonchaTsumo() ||
+		kyokuResult.isTonchaTenpai()
 }
 
 ///// unexported

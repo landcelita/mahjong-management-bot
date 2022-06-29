@@ -1118,7 +1118,7 @@ func TestKyokuResult_WhoRiichi(t *testing.T) {
 				nil,
 				FirstPtoP(hf.NewHanFu(hf.Han10, hf.FuUndefined)),
 			},
-			want:    &map[jicha.Jicha]struct{}{
+			want: &map[jicha.Jicha]struct{}{
 				toncha2: {}, nancha: {}, pecha: {},
 			},
 		},
@@ -1137,7 +1137,7 @@ func TestKyokuResult_WhoRiichi(t *testing.T) {
 				nil,
 				FirstPtoP(hf.NewHanFu(hf.Han10, hf.FuUndefined)),
 			},
-			want:    &map[jicha.Jicha]struct{}{},
+			want: &map[jicha.Jicha]struct{}{},
 		},
 	}
 	for _, tt := range tests {
@@ -1155,6 +1155,118 @@ func TestKyokuResult_WhoRiichi(t *testing.T) {
 			}
 			if got := kyokuResult.WhoRiichi(); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("KyokuResult.WhoRiichi() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestKyokuResult_IsTonchaRonOrTsumoOrTenpai(t *testing.T) {
+	type fields struct {
+		kyokuResultId KyokuResultId
+		gameStatusId  gs.GameStatusId
+		baKyokuHonba  bkh.BaKyokuHonba
+		riichiers     map[jicha.Jicha]struct{}
+		ronWinner     *jicha.Jicha
+		ronLoser      *jicha.Jicha
+		tsumoWinner   *jicha.Jicha
+		tenpaiers     *map[jicha.Jicha]struct{}
+		hanFu         *hf.HanFu
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		want   bool
+	}{
+		{
+			name: "Toncha以外がtsumo",
+			fields: fields{
+				KyokuResultId(uuid.New()),
+				gs.GameStatusId(uuid.New()),
+				FirstPtoV(bkh.NewBaKyokuHonba(
+					bkh.Nan, 4, 1,
+				)),
+				map[jicha.Jicha]struct{}{
+					toncha: {}, nancha: {}, pecha: {},
+				},
+				nil,
+				nil,
+				&nancha,
+				nil,
+				FirstPtoP(hf.NewHanFu(hf.Han10, hf.FuUndefined)),
+			},
+			want: false,
+		},
+		{
+			name: "Tonchaがtsumo",
+			fields: fields{
+				KyokuResultId(uuid.New()),
+				gs.GameStatusId(uuid.New()),
+				FirstPtoV(bkh.NewBaKyokuHonba(
+					bkh.Nan, 4, 1,
+				)),
+				map[jicha.Jicha]struct{}{
+					toncha: {}, nancha: {}, pecha: {},
+				},
+				nil,
+				nil,
+				&toncha,
+				nil,
+				FirstPtoP(hf.NewHanFu(hf.Han10, hf.FuUndefined)),
+			},
+			want: true,
+		},
+		{
+			name: "Tonchaがtenpai",
+			fields: fields{
+				KyokuResultId(uuid.New()),
+				gs.GameStatusId(uuid.New()),
+				FirstPtoV(bkh.NewBaKyokuHonba(
+					bkh.Nan, 4, 1,
+				)),
+				map[jicha.Jicha]struct{}{},
+				nil,
+				nil,
+				nil,
+				&map[jicha.Jicha]struct{}{
+					toncha: {},
+				},
+				FirstPtoP(hf.NewHanFu(hf.Han10, hf.FuUndefined)),
+			},
+			want: true,
+		},
+		{
+			name: "Tonchaがron",
+			fields: fields{
+				KyokuResultId(uuid.New()),
+				gs.GameStatusId(uuid.New()),
+				FirstPtoV(bkh.NewBaKyokuHonba(
+					bkh.Nan, 4, 1,
+				)),
+				map[jicha.Jicha]struct{}{},
+				&toncha,
+				&nancha,
+				nil,
+				nil,
+				FirstPtoP(hf.NewHanFu(hf.Han10, hf.FuUndefined)),
+			},
+			want: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			kyokuResult := &KyokuResult{
+				kyokuResultId: tt.fields.kyokuResultId,
+				gameStatusId:  tt.fields.gameStatusId,
+				baKyokuHonba:  tt.fields.baKyokuHonba,
+				riichiers:     tt.fields.riichiers,
+				ronWinner:     tt.fields.ronWinner,
+				ronLoser:      tt.fields.ronLoser,
+				tsumoWinner:   tt.fields.tsumoWinner,
+				tenpaiers:     tt.fields.tenpaiers,
+				hanFu:         tt.fields.hanFu,
+			}
+			if got := kyokuResult.IsTonchaRonOrTsumoOrTenpai(); got != tt.want {
+				t.Errorf("KyokuResult.IsTonchaRonOrTsumoOrTenpai() = %v, want %v", got, tt.want)
 			}
 		})
 	}
