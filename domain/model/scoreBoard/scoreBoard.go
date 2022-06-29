@@ -124,3 +124,11 @@ func (scoreBoard *ScoreBoard) No1AtOlast() jc.Jicha {
 	}
 	return firstPlayer
 }
+
+func (scoreBoard *ScoreBoard) AdvanceGameBaKyoku() {
+	tmp := scoreBoard.scores[jc.Toncha]
+	scoreBoard.scores[jc.Toncha] = scoreBoard.scores[jc.Nancha]
+	scoreBoard.scores[jc.Nancha] = scoreBoard.scores[jc.Shacha]
+	scoreBoard.scores[jc.Shacha] = scoreBoard.scores[jc.Pecha]
+	scoreBoard.scores[jc.Pecha] = tmp
+}
