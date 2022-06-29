@@ -1,6 +1,7 @@
 package scoreboard
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/google/uuid"
@@ -112,6 +113,70 @@ func TestNewScoreBoard(t *testing.T) {
 			if (err != nil) != tt.wantErr {
 				t.Errorf("NewScoreBoard() error = %v, wantErr %v", err, tt.wantErr)
 				return
+			}
+		})
+	}
+}
+
+func TestScoreBoard_AddKyotakuTo(t *testing.T) {
+	type fields struct {
+		scoreBoardId ScoreBoardId
+		scores       map[jc.Jicha]sc.Score
+		kyotaku      sc.Score
+	}
+	type args struct {
+		score sc.Score
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		args   args
+		want   sc.Score
+	}{
+		{
+			name:	"kyotakuが0のとき",
+			fields:	fields {
+				scoreBoardId: 	ScoreBoardId(uuid.New()),
+				scores:			map[jc.Jicha]sc.Score {
+					jc.Toncha: FirstPtoV(sc.NewScore(25000)),
+					jc.Nancha: FirstPtoV(sc.NewScore(25000)),
+					jc.Shacha: FirstPtoV(sc.NewScore(25000)),
+					jc.Pecha:  FirstPtoV(sc.NewScore(25000)),
+				},
+				kyotaku:		FirstPtoV(sc.NewScore(0)),
+			},
+			args: args {
+				score:	FirstPtoV(sc.NewScore(200)),
+			},
+			want: FirstPtoV(sc.NewScore(200)),
+		},
+		{
+			name:	"kyotakuが1000のとき",
+			fields:	fields {
+				scoreBoardId: 	ScoreBoardId(uuid.New()),
+				scores:			map[jc.Jicha]sc.Score {
+					jc.Toncha: FirstPtoV(sc.NewScore(25000)),
+					jc.Nancha: FirstPtoV(sc.NewScore(25000)),
+					jc.Shacha: FirstPtoV(sc.NewScore(25000)),
+					jc.Pecha:  FirstPtoV(sc.NewScore(25000)),
+				},
+				kyotaku:		FirstPtoV(sc.NewScore(1000)),
+			},
+			args: args {
+				score:	FirstPtoV(sc.NewScore(200)),
+			},
+			want: FirstPtoV(sc.NewScore(1200)),
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			scoreBoard := &ScoreBoard{
+				scoreBoardId: tt.fields.scoreBoardId,
+				scores:       tt.fields.scores,
+				kyotaku:      tt.fields.kyotaku,
+			}
+			if got := scoreBoard.AddKyotakuTo(tt.args.score); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("ScoreBoard.AddKyotakuTo() = %v, want %v", got, tt.want)
 			}
 		})
 	}

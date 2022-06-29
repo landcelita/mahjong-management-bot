@@ -86,3 +86,7 @@ func NewInitScoreBoard(
 func (scoreBoard *ScoreBoard) ID() ScoreBoardId {
 	return scoreBoard.scoreBoardId
 }
+
+func (scoreBoard *ScoreBoard) AddKyotakuTo(score sc.Score) sc.Score {
+	return score.Add(scoreBoard.kyotaku)
+}
