@@ -11,3 +11,5 @@ IDE: VSCode(Codespaces)
 ドキュメント、作図: drawio
 
 クラウド: GCP
+
+CI: GitHub Actionを用いた自動テスト, 成否のSlackへの通知
