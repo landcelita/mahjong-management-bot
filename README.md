@@ -3,7 +3,11 @@
 
 ## 技術スタック
 IDE: VSCode(Codespaces)
+
 使用言語: Go
+
 アーキテクチャ: オニオンアーキテクチャ
+
 ドキュメント、作図: drawio
+
 クラウド: GCP
